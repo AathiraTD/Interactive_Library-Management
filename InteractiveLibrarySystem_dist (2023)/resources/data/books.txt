@@ -1,9 +1,9 @@
-15::Pride and Prejudice::Jane Austen::1813::13
-23::Nineteen Eighty-Four::George Orwell::1949::13
-42::The Hitchhiker's Guide to the Galaxy::Douglas Adams::1979::-1
-43::The War of The Worlds::H.G. Wells::1898::49
-44::Sprint::Knapp::2001::-1
-45::What You Get is What you Seek::Alan Sugar::1998::50
-46::Nurtirwe::qwewqe::qweqwe::-1
-47::The Fountainhead::Ayn Rand::1952::6
-48::Anna Karenina::Leo Tolstoy::1763::-1
+15::Pride and Prejudice::Jane Austen::1813::1::false
+23::Nineteen Eighty-Four::George Orwell::1949::2::false
+42::The Hitchhiker's Guide to the Galaxy::Douglas Adams::1979::-1::true
+43::The War of The Worlds::H.G. Wells::1898::-1::true
+44::Sprint::Knapp::2001::-1::true
+45::What You Get is What you Seek::Alan Sugar::1998::11::false
+46::Nurtirwe::qwewqe::qweqwe::-1::false
+47::The Fountainhead::Ayn Rand::1952::12::false
+48::Anna Karenina::Leo Tolstoy::1763::-1::false

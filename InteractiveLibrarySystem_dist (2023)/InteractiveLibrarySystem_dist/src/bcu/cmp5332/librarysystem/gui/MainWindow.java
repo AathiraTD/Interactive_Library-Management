@@ -1,9 +1,12 @@
 package bcu.cmp5332.librarysystem.gui;
 
+import bcu.cmp5332.librarysystem.data.LibraryData;
+import bcu.cmp5332.librarysystem.main.LibraryException;
 import bcu.cmp5332.librarysystem.model.Book;
 import bcu.cmp5332.librarysystem.model.Library;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -114,10 +117,10 @@ public class MainWindow extends JFrame implements ActionListener {
     }	
 
 /* Uncomment the following code to run the GUI version directly from the IDE */
-//    public static void main(String[] args) throws IOException, LibraryException {
-//        Library library = LibraryData.load();
-//        new MainWindow(library);			
-//    }
+    public static void main(String[] args) throws IOException, LibraryException {
+        Library library = LibraryData.load();
+        new MainWindow(library);			
+    }
 
 
 

@@ -45,6 +45,10 @@ public class CommandParser {
                     break;
                 case "return":
                     return parseReturnBook(parts);
+                case "hidebooks":
+                	return parseHideBooks(parts);
+                case "hidepatrons":
+                	return parseHidePatrons(parts);
             }
         } catch (NumberFormatException ex) {
             throw new LibraryException("Invalid numeric value in command.");
@@ -128,4 +132,40 @@ public class CommandParser {
         }
         return bookIds;
     }
+    
+ // Parses the 'hidebooks' command
+    private static Command parseHideBooks(String[] parts) throws LibraryException {
+        if (parts.length < 2) {
+            throw new LibraryException("No book IDs provided for hidebooks command.");
+        }
+        String[] bookIdsStr = parts[1].split(",");
+        List<Integer> bookIds = new ArrayList<>();
+        for (String idStr : bookIdsStr) {
+            try {
+                bookIds.add(Integer.parseInt(idStr.trim()));
+            } catch (NumberFormatException e) {
+                throw new LibraryException("Invalid book ID: " + idStr);
+            }
+        }
+        return new HideBooks(bookIds);
+    }
+    
+ // Parses the 'hidepatrons' command
+    private static Command parseHidePatrons(String[] parts) throws LibraryException {
+        if (parts.length < 2) {
+            throw new LibraryException("No patron IDs provided for hidepatrons command.");
+        }
+        String[] patronIdsStr = parts[1].split(",");
+        List<Integer> patronIds = new ArrayList<>();
+        for (String idStr : patronIdsStr) {
+            try {
+                patronIds.add(Integer.parseInt(idStr.trim()));
+            } catch (NumberFormatException e) {
+                throw new LibraryException("Invalid patron ID: " + idStr);
+            }
+        }
+        return new HidePatrons(patronIds);
+    }
+
+
 }

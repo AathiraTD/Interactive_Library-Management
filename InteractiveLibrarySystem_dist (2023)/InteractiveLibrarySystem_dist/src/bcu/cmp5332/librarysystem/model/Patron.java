@@ -9,13 +9,20 @@ public class Patron {
     private String name; // Name of the patron
     private String phone; // Phone number of the patron
     private List<Book> books; // List of books borrowed by the patron
+    private boolean isDeleted = false; // Flag to indicate if the patron is hidden
+
     
     // Constructor initializes the patron with ID, name, and phone number
-    public Patron(int id, String name, String phoneNumber) {
+    public Patron(int id, String name, String phoneNumber, boolean isDeleted) {
         this.id = id;
         this.name = name;
         this.phone = phoneNumber;
         this.books = new ArrayList<>();
+        this.isDeleted = isDeleted;
+    }
+    
+    public Patron(int id, String name, String phoneNumber) {
+    	this(id, name, phoneNumber, false); // Call the other constructor with isDeleted set to false
     }
     
     // Getters and setters for patron's properties
@@ -43,6 +50,17 @@ public class Patron {
         this.phone = phoneNumber;
     }
     
+    // Method to hide the patron
+    public void hidePatron() {
+        this.isDeleted = true;
+    }
+
+    // Method to check if the patron is hidden
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    
     // Returns a short description of the patron
     public String getDetailsShort() {
         return "Patron #" + id + " - " + name;
@@ -58,10 +76,8 @@ public class Patron {
         if (book == null) {
             throw new LibraryException("Cannot borrow a null book.");
         }
-        if (!book.isOnLoan()) {
-            books.add(book);
-        } else {
-            throw new LibraryException("Book is already loaned out.");
+        else {
+        	books.add(book);
         }
     }
 

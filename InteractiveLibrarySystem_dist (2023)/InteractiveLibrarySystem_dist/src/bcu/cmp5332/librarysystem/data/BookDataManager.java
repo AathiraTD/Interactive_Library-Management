@@ -37,7 +37,8 @@ public class BookDataManager implements DataManager {
                 String publicationYear = properties[3];
 
                 int loanId = parseLoanId(properties, id);
-                Book book = new Book(id, title, author, publicationYear);
+                boolean isDeleted = parseIsDeleted(properties, id);
+                Book book = new Book(id, title, author, publicationYear,isDeleted);
                 book.setTemporaryLoanId(loanId); // Temporarily store loan ID for later processing
                 library.addBook(book);
             }
@@ -62,6 +63,16 @@ public class BookDataManager implements DataManager {
         }
         return -1;
     }
+    
+    private boolean parseIsDeleted(String[] properties, int bookId) {
+        // Assuming 'isDeleted' is the sixth element (index 5) in the properties array
+        if (properties.length > 5 && !properties[5].isEmpty()) {
+            return "true".equals(properties[5].trim().toLowerCase());
+        }
+        // Default to false if 'isDeleted' is not present or is empty
+        return false;
+    }
+
 
     /**
      * Stores book data to a file from the library.
@@ -78,10 +89,12 @@ public class BookDataManager implements DataManager {
                 out.print(book.getAuthor() + SEPARATOR);
                 out.print(book.getPublicationYear() + SEPARATOR);
                 int loanId = (book.getLoan() != null) ? book.getLoan().getLoanId() : -1;
-                out.println(loanId); // Write the loan ID or -1 if no loan
+                out.print(loanId + SEPARATOR); // Write the loan ID
+                out.println(book.isDeleted()); // Write the isDeleted flag
             }
         } catch (IOException ex) {
             throw new IOException("Failed to write to " + RESOURCE, ex);
         }
     }
+
 }

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 /**
@@ -34,15 +35,24 @@ public class LoanDataManager implements DataManager {
         try (Scanner scanner = new Scanner(new File(RESOURCE))) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
+                
+                if (line.isEmpty()) {
+                    // Skip empty lines
+                    continue;
+                }
                 String[] parts = line.split("::");
+                
+                if (parts.length < 4) {
+                    throw new LibraryException("Invalid line format in loans file: " + line);
+                }
 
-                int loanId = Integer.parseInt(parts[0]);
-                int patronId = Integer.parseInt(parts[1]);
-                int bookId = Integer.parseInt(parts[2]);
-                LocalDate dueDate = LocalDate.parse(parts[3], FORMATTER);
+                int loanId = parseInteger(parts[0], "loan ID");
+                int patronId = parseInteger(parts[1], "patron ID");
+                int bookId = parseInteger(parts[2], "book ID");
+                LocalDate dueDate = parseDate(parts[3], "due date");
 
-                LocalDate returnDate = parts.length > 4 && !parts[4].isEmpty() ? LocalDate.parse(parts[4], FORMATTER) : null;
-                String status = parts.length > 5 ? parts[5] : "active";
+                LocalDate returnDate = parts.length > 4 && !parts[4].isEmpty() ? parseDate(parts[4], "return date") : null;
+                String status = parts.length > 5 && !parts[5].isEmpty() ? parts[5] : "active";
 
                 Patron patron = library.getPatronByID(patronId);
                 Book book = library.getBookByID(bookId);
@@ -57,6 +67,23 @@ public class LoanDataManager implements DataManager {
             }
         }
     }
+
+    private int parseInteger(String value, String fieldName) throws LibraryException {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            throw new LibraryException("Invalid format for " + fieldName + ": " + value);
+        }
+    }
+
+    private LocalDate parseDate(String value, String fieldName) throws LibraryException {
+        try {
+            return LocalDate.parse(value, FORMATTER);
+        } catch (DateTimeParseException e) {
+            throw new LibraryException("Invalid format for " + fieldName + ": " + value);
+        }
+    }
+
 
     /**
      * Stores loan data to a file from the library.

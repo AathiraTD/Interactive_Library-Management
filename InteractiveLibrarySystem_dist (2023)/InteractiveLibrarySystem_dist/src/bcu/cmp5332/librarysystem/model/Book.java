@@ -10,6 +10,7 @@ public class Book {
     private String author; // Author of the book
     private String publicationYear; // Year of publication
     private int temporaryLoanId; // Temporary field to store loan ID during initial data loading
+    private boolean isDeleted = false; // Default value is false
 
     private Loan loan; // Reference to the Loan object if the book is loaned
     
@@ -19,12 +20,18 @@ public class Book {
     }
 
     // Constructor to initialize the book object
-    public Book(int id, String title, String author, String publicationYear) {
+    public Book(int id, String title, String author, String publicationYear, boolean isDeleted) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.publicationYear = publicationYear;
         this.temporaryLoanId = -1; // Initialize with -1 indicating no loan
+        this.isDeleted = isDeleted;
+    }
+    
+    // Constructor without isDeleted (original constructor)
+    public Book(int id, String title, String author, String publicationYear) {
+        this(id, title, author, publicationYear, false); // Call the other constructor with isDeleted set to false
     }
 
     // Getters and setters for book properties
@@ -36,6 +43,14 @@ public class Book {
     public void setAuthor(String author) { this.author = author; }
     public String getPublicationYear() { return publicationYear; }
     public void setPublicationYear(String publicationYear) { this.publicationYear = publicationYear; }
+    // Method to hide the book
+    public void hideBook() {
+        this.isDeleted = true;
+    }
+    // Getter for isDeleted
+    public boolean isDeleted() {
+        return isDeleted;
+    }
     
     // Short description of the book
     public String getDetailsShort() {

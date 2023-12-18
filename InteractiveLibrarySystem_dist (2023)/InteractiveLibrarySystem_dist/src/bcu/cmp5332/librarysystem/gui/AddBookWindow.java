@@ -19,7 +19,11 @@ import javax.swing.UIManager;
 
 public class AddBookWindow extends JFrame implements ActionListener {
 
-    private MainWindow mw;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private MainWindow mw;
     private JTextField titleText = new JTextField();
     private JTextField authText = new JTextField();
     private JTextField pubDateText = new JTextField();
