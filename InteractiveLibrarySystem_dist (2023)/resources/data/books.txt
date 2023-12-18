@@ -6,4 +6,3 @@
 45::What You Get is What you Seek::Alan Sugar::1998::11::false
 46::Nurtirwe::qwewqe::qweqwe::-1::false
 47::The Fountainhead::Ayn Rand::1952::12::false
-48::Anna Karenina::Leo Tolstoy::1763::-1::false
