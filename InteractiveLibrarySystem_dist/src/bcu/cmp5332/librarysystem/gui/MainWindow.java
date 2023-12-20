@@ -2,12 +2,16 @@ package bcu.cmp5332.librarysystem.gui;
 
 import bcu.cmp5332.librarysystem.data.LibraryData;
 import bcu.cmp5332.librarysystem.main.LibraryException;
-import bcu.cmp5332.librarysystem.model.Book;
-import bcu.cmp5332.librarysystem.model.Library;
+import bcu.cmp5332.librarysystem.model.*;
+import bcu.cmp5332.librarysystem.model.Book.Status;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -34,6 +38,8 @@ public class MainWindow extends JFrame implements ActionListener {
     private JMenuItem memView;
     private JMenuItem memAdd;
     private JMenuItem memDel;
+    
+    //private JButton viewPatron;
 
     private Library library;
 
@@ -105,7 +111,7 @@ public class MainWindow extends JFrame implements ActionListener {
         memAdd.addActionListener(this);
         memDel.addActionListener(this);
 
-        setSize(800, 500);
+        setSize(1100, 500); //width was 800
 
         setVisible(true);
         setAutoRequestFocus(true);
@@ -145,10 +151,10 @@ public class MainWindow extends JFrame implements ActionListener {
             
             
         } else if (ae.getSource() == memView) {
-            
+            displayPatrons();
             
         } else if (ae.getSource() == memAdd) {
-            
+            new AddPatronWindow(this);
             
         } else if (ae.getSource() == memDel) {
             
@@ -174,5 +180,47 @@ public class MainWindow extends JFrame implements ActionListener {
         this.getContentPane().removeAll();
         this.getContentPane().add(new JScrollPane(table));
         this.revalidate();
-    }	
+    }
+    
+    public void displayPatrons() {
+        List<Patron> patronsList = library.getPatrons();
+        // headers for the table
+        String[] columns = new String[]{"Name", "Phone number", "Email", "Loaned Books"};
+
+        Object[][] data = new Object[patronsList.size()][6];
+        for (int i = 0; i < patronsList.size(); i++) {
+            Patron patron = patronsList.get(i);
+            data[i][0] = patron.getName();
+            data[i][1] = patron.getPhoneNumber();
+            data[i][2] = patron.getEmail();
+//            if (!patron.getBorrowedBooks().isEmpty()) {    //lists names of borrowed books
+//            	List<Book> borrowedList = patron.getBorrowedBooks();
+//            	//List<String> namesList = Collections.emptyList();
+//            	String names = "";
+//            	for (int x = 0; x < borrowedList.size(); x++) {
+//            		Book book = borrowedList.get(x);
+//            		if (x == borrowedList.size() - 1) {
+//            			names += book.getTitle();
+//            		} else {
+//            			names += book.getTitle() + ", ";
+//            		}
+//            	}
+//            	data[i][3] = names;
+//            } else {
+//            	data[i][3] = "None";
+//            }
+            if (!patron.getBorrowedBooks().isEmpty()) {
+            	List<Book> borrowedList = patron.getBorrowedBooks(); //lists number of borrowed books
+            	data[i][3] = borrowedList.size() + " book(s)";
+            } else {
+            	data[i][3] = "None";
+            }
+        }
+
+        JTable table = new JTable(data, columns);
+        this.getContentPane().removeAll();
+        this.getContentPane().add(new JScrollPane(table));
+        this.revalidate();
+    }
+    
 }

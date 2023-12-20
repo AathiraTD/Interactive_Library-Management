@@ -2,4 +2,3 @@
 23::Nineteen Eighty-Four::George Orwell::1949::Secker & Warburg::-1::false
 42::The Hitchhiker's Guide to the Galaxy::Douglas Adams::1979::Pan Books::-1::false
 43::The War of The Worlds::H.G. Wells::1898::William Heinemann::-1::false
-44::The Great Gatsby::F. Scott Fitzgerald::1925::Charles Scribner's Sons::-1::false
