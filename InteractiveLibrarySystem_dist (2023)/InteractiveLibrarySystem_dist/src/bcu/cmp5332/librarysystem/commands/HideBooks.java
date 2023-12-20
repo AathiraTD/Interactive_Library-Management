@@ -1,8 +1,10 @@
 package bcu.cmp5332.librarysystem.commands;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
+import bcu.cmp5332.librarysystem.data.LibraryData;
 import bcu.cmp5332.librarysystem.main.LibraryException;
 import bcu.cmp5332.librarysystem.model.Book;
 import bcu.cmp5332.librarysystem.model.Library;
@@ -32,6 +34,12 @@ public class HideBooks implements Command {
 	
 	        // Hide the book
 	        book.hideBook();
+	        try {
+				LibraryData.store(library);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
 	        System.out.println("Book with ID " + bookId + " has been successfully hidden.");
     	}
     }

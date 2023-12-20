@@ -18,7 +18,11 @@ import javax.swing.UIManager;
 
 public class MainWindow extends JFrame implements ActionListener {
 
-    private JMenuBar menuBar;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JMenuBar menuBar;
     private JMenu adminMenu;
     private JMenu booksMenu;
     private JMenu membersMenu;
@@ -30,6 +34,7 @@ public class MainWindow extends JFrame implements ActionListener {
     private JMenuItem booksDel;	
     private JMenuItem booksIssue;
     private JMenuItem booksReturn;
+    private JMenuItem booksRenew;
 
     private JMenuItem memView;
     private JMenuItem memAdd;
@@ -80,11 +85,15 @@ public class MainWindow extends JFrame implements ActionListener {
         booksDel = new JMenuItem("Delete");
         booksIssue = new JMenuItem("Issue");
         booksReturn = new JMenuItem("Return");
+        booksRenew = new JMenuItem("Renew");
+        
         booksMenu.add(booksView);
         booksMenu.add(booksAdd);
         booksMenu.add(booksDel);
         booksMenu.add(booksIssue);
         booksMenu.add(booksReturn);
+        booksMenu.add(booksRenew);
+        
         for (int i = 0; i < booksMenu.getItemCount(); i++) {
             booksMenu.getItem(i).addActionListener(this);
         }
@@ -139,12 +148,15 @@ public class MainWindow extends JFrame implements ActionListener {
             
             
         } else if (ae.getSource() == booksIssue) {
-            
-            
+           new IssueBookWindow(this);
+           
         } else if (ae.getSource() == booksReturn) {
+           new ReturnBookWindow(this);
             
+        } else if (ae.getSource() == booksRenew) {
+            new RenewBookWindow(this);
             
-        } else if (ae.getSource() == memView) {
+         }else if (ae.getSource() == memView) {
             
             
         } else if (ae.getSource() == memAdd) {

@@ -2,7 +2,10 @@ package bcu.cmp5332.librarysystem.commands;
 
 import bcu.cmp5332.librarysystem.model.Library;
 import bcu.cmp5332.librarysystem.model.Patron;
+import bcu.cmp5332.librarysystem.data.LibraryData;
 import bcu.cmp5332.librarysystem.main.LibraryException;
+
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +43,13 @@ public class AddPatron implements Command {
                 // Log or handle the error as necessary
             }
         }
+        
+        try {
+			LibraryData.store(library);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 
         // Reporting success and any issues with unavailable books
         System.out.println("Patron #" + newPatron.getId() + " added with " + (bookIds.size() - unavailableBooks.size()) + " borrowed books.");

@@ -2,7 +2,10 @@ package bcu.cmp5332.librarysystem.commands;
 
 import bcu.cmp5332.librarysystem.model.Library;
 import bcu.cmp5332.librarysystem.model.Patron;
+import bcu.cmp5332.librarysystem.data.LibraryData;
 import bcu.cmp5332.librarysystem.main.LibraryException;
+
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -40,6 +43,12 @@ public class HidePatrons implements Command {
             if (!patron.isDeleted()) {
                 // Hide the patron if they are not already hidden
                 patron.hidePatron();
+                try {
+        			LibraryData.store(library);
+        		} catch (IOException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		} 
                 System.out.println("Patron with ID " + patronId + " has been hidden.");
             } else {
                 // Indicate if the patron is already hidden

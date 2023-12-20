@@ -41,8 +41,7 @@ public class CommandParser {
                 case "borrow":
                     return parseBorrowBook(parts);
                 case "renew":
-                    // Implement renew command parsing
-                    break;
+                	return parseRenewBook(parts);
                 case "return":
                     return parseReturnBook(parts);
                 case "hidebooks":
@@ -111,6 +110,16 @@ public class CommandParser {
     }
 
     // Parses the 'return' command
+    private static Command parseRenewBook(String[] parts) throws LibraryException {
+        if (parts.length < 3) {
+            throw new LibraryException("Insufficient arguments for renew command.");
+        }
+        int patronId = Integer.parseInt(parts[1]);
+        int bookId = Integer.parseInt(parts[2]);
+        return new RenewBook(patronId, bookId);
+    }
+
+ // Parses the 'renew' command
     private static Command parseReturnBook(String[] parts) throws LibraryException {
         if (parts.length < 3) {
             throw new LibraryException("Insufficient arguments for return command.");
@@ -119,7 +128,6 @@ public class CommandParser {
         int bookId = Integer.parseInt(parts[2]);
         return new ReturnBook(patronId, bookId);
     }
-
     // Helper method to parse book IDs from a comma-separated string
     private static List<Integer> parseBookIds(String line) {
         List<Integer> bookIds = new ArrayList<>();

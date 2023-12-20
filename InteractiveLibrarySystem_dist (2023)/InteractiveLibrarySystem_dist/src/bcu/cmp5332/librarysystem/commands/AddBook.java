@@ -2,7 +2,10 @@ package bcu.cmp5332.librarysystem.commands;
 
 import bcu.cmp5332.librarysystem.model.Book;
 import bcu.cmp5332.librarysystem.model.Library;
+import bcu.cmp5332.librarysystem.data.LibraryData;
 import bcu.cmp5332.librarysystem.main.LibraryException;
+
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class AddBook implements  Command {
@@ -26,6 +29,12 @@ public class AddBook implements  Command {
     	}
         Book book = new Book(++maxId, title, author, publicationYear);
         library.addBook(book);
+        try {
+			LibraryData.store(library);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
         System.out.println("Book #" + book.getId() + " added.");
     }
 }

@@ -4,7 +4,10 @@ import bcu.cmp5332.librarysystem.model.Book;
 import bcu.cmp5332.librarysystem.model.Library;
 import bcu.cmp5332.librarysystem.model.Loan;
 import bcu.cmp5332.librarysystem.model.Patron;
+import bcu.cmp5332.librarysystem.data.LibraryData;
 import bcu.cmp5332.librarysystem.main.LibraryException;
+
+import java.io.IOException;
 import java.time.LocalDate;
 
 /**
@@ -57,6 +60,13 @@ public class BorrowBook implements Command {
 
         // Link the books to their loans after updating
         library.linkBooksToLoans();
+        
+        try {
+			LibraryData.store(library);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 
         System.out.println("Book #" + book.getId() + " has been issued to Patron #" + patron.getId() + " due on " + dueDate);
     }
