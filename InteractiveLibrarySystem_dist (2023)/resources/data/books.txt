@@ -1,11 +1,8 @@
-15::Pride and Prejudice::Jane Austen::1813::2::false
-23::Nineteen Eighty-Four::George Orwell::1949::-1::false
-42::The Hitchhiker's Guide to the Galaxy::Douglas Adams::1979::-1::true
-43::The War of The Worlds::H.G. Wells::1898::-1::true
-44::Sprint::Knapp::2001::-1::true
-45::What You Get is What you Seek::Alan Sugar::1998::-1::false
-46::Nurtirwe::qwewqe::qweqwe::-1::false
-47::The Fountainhead::Ayn Rand::1952::-1::false
-48::Anna Karenina::Leo Tolstoy::1763::-1::false
-49::Influence::Robert B Cladim::1998::-1::false
-51::One Hundred Years of Solitude::Gabriel Garcia Marquez::1934::-1::false
+15::Pride and Prejudice::Jane Austen::1813::T. Egerton, Whitehall::4::false
+23::Nineteen Eighty-Four::George Orwell::1949::Secker & Warburg::3::false
+42::The Hitchhiker's Guide to the Galaxy::Douglas Adams::1979::Pan Books::-1::false
+43::The War of The Worlds::H.G. Wells::1898::William Heinemann::2::false
+44::The Great Gatsby::F. Scott Fitzgerald::1925::Charles Scribner's Sons::5::false
+45::Anna Karenina::Leo Tolstoy::1665::PK::-1::true
+46::Imperium::Robert Harris::1991::CZBX::6::false
+47::Influence::Katty Poerce::1976::PKN::7::false

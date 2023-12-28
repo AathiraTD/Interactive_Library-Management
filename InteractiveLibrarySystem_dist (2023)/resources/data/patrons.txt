@@ -1,5 +1,9 @@
-1::Abdel-Rahman Tawil::07555555555::15::false
-2::Kostas Vlachos::07596454545::::false
-3::Alex::8678687686::::false
-4::Misha::233445656::::true
-5::Shay given::23423435626::::true
+1::Abdel-Rahman Tawil::07555555555::abdelrahman.tawil@mail.bcu.ac.uk::::true
+2::Kostas Vlachos::07596454545::kostas.vlachos@mail.bcu.ac.uk::43,23::true
+3::Aathira::7405534994::aathiratdev31@gmail.com::15,46::false
+4::Athulya::7876542234::athulyatdev31@gmail.com::::false
+5::Shane Nigam::8765432109::s.nigam@gmail.com::::false
+6::Shenoy::998777666554::s.multi@gmail.com::::false
+7::Alexis::9089674512::alexis.moran@gmail.com::44::false
+8::Helen::998877665544::h.keller@yahoo.com::::false
+9::Annet Johns::87364133415::a.jones@yahoo.com::47::false
