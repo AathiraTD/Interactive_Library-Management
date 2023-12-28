@@ -3,7 +3,6 @@ package bcu.cmp5332.librarysystem.gui;
 import bcu.cmp5332.librarysystem.commands.AddPatron;
 import bcu.cmp5332.librarysystem.commands.Command;
 import bcu.cmp5332.librarysystem.main.LibraryException;
-import bcu.cmp5332.librarysystem.utils.*;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -116,13 +115,9 @@ public class AddPatronWindow extends JFrame implements ActionListener {
             List<Integer> bookIds = parseBookIds(bookIdsLine);
             // create and execute the AddBook Command
             Command addPatron = new AddPatron(name, phone, email, bookIds);
-            MessageDisplayer guiDisplayer = new GuiMessageDisplayer();
-            addPatron.execute(mw.getLibrary(), LocalDate.now(), guiDisplayer);
+            addPatron.execute(mw.getLibrary(), LocalDate.now());
             // refresh the view with the list of books
-            mw.displayPatrons();
-            
-            //Display success message
-            JOptionPane.showMessageDialog(this, "Patron successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            mw.displayBooks();
             // hide (close) the AddBookWindow
             this.setVisible(false);
         } catch (LibraryException ex) {
