@@ -1,8 +1,0 @@
-15::Pride and Prejudice::Jane Austen::1813::T. Egerton, Whitehall::4::false
-23::Nineteen Eighty-Four::George Orwell::1949::Secker & Warburg::3::false
-42::The Hitchhiker's Guide to the Galaxy::Douglas Adams::1979::Pan Books::-1::false
-43::The War of The Worlds::H.G. Wells::1898::William Heinemann::2::false
-44::The Great Gatsby::F. Scott Fitzgerald::1925::Charles Scribner's Sons::5::false
-45::Anna Karenina::Leo Tolstoy::1665::PK::-1::true
-46::Imperium::Robert Harris::1991::CZBX::6::false
-47::Influence::Katty Poerce::1976::PKN::7::false
