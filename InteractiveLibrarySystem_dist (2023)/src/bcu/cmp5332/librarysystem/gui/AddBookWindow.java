@@ -1,16 +1,11 @@
 package bcu.cmp5332.librarysystem.gui;
 
-import bcu.cmp5332.librarysystem.commands.AddBook;
-import bcu.cmp5332.librarysystem.commands.Command;
+import bcu.cmp5332.librarysystem.controllers.LibraryController;
 import bcu.cmp5332.librarysystem.main.LibraryException;
-import bcu.cmp5332.librarysystem.utils.*;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
-
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,10 +28,14 @@ public class AddBookWindow extends JFrame implements ActionListener {
 
     private JButton addBtn = new JButton("Add");
     private JButton cancelBtn = new JButton("Cancel");
+    
+    private LibraryController controller;
 
-    public AddBookWindow(MainWindow mw) {
-        this.mw = mw;
+
+    public AddBookWindow(MainWindow mw, LibraryController controller) {
+    	this.mw = mw;
         initialize();
+        this.controller = controller;
     }
 
     /**
@@ -84,34 +83,33 @@ public class AddBookWindow extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == addBtn) {
-            addBook();
+            try {
+				addBook();
+			} catch (LibraryException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         } else if (ae.getSource() == cancelBtn) {
             this.setVisible(false);
         }
 
     }
 
-    private void addBook() {
-        try {
-            String title = titleText.getText();
-            String author = authText.getText();
-            String publicationYear = pubDateText.getText();
-            String publisher = publText.getText();
-            // create and execute the AddBook Command
-            Command addBook = new AddBook(title, author, publicationYear, publisher);
-            MessageDisplayer guiDisplayer = new GuiMessageDisplayer();
-            addBook.execute(mw.getLibrary(), LocalDate.now(), guiDisplayer);
-            // refresh the view with the list of books
-            mw.displayBooks();
-            
-         // Display success message
-            JOptionPane.showMessageDialog(this, "Book successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            
-            // hide (close) the AddBookWindow
-            this.setVisible(false);
-        } catch (LibraryException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+    private void addBook() throws LibraryException {
+        String title = titleText.getText();
+		String author = authText.getText();
+		String publicationYear = pubDateText.getText();
+		String publisher = publText.getText();
+
+		// Delegate the action to the controller
+		controller.addBook(title, author, publicationYear, publisher);
+
+		// Refresh the main window display
+        mw.displayBooks();
+        
+		// Display success message and close the window
+		JOptionPane.showMessageDialog(this, "Book: " + title + " successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+		this.setVisible(false);
     }
 
 }

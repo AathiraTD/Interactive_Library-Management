@@ -1,16 +1,11 @@
 package bcu.cmp5332.librarysystem.gui;
 
-import bcu.cmp5332.librarysystem.commands.RenewBook;
-import bcu.cmp5332.librarysystem.commands.Command;
+import bcu.cmp5332.librarysystem.controllers.LibraryController;
 import bcu.cmp5332.librarysystem.main.LibraryException;
-import bcu.cmp5332.librarysystem.utils.GuiMessageDisplayer;
-import bcu.cmp5332.librarysystem.utils.MessageDisplayer;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
 
 public class RenewBookWindow extends JFrame implements ActionListener {
 
@@ -23,9 +18,11 @@ public class RenewBookWindow extends JFrame implements ActionListener {
     private JTextField patronIdText = new JTextField();
     private JButton renewBtn = new JButton("Renew");
     private JButton cancelBtn = new JButton("Cancel");
+    private LibraryController controller;
 
-    public RenewBookWindow(MainWindow mw) {
+    public RenewBookWindow(MainWindow mw,LibraryController controller) {
         this.mw = mw;
+        this.controller=controller;
         initialize(); // Initialize the window components
     }
 
@@ -71,16 +68,17 @@ public class RenewBookWindow extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Renews a book using the provided book ID and patron ID.
+     */
     private void renewBook() {
         try {
             // Parse the book ID and patron ID from the text fields
             int bookId = Integer.parseInt(bookIdText.getText());
             int patronId = Integer.parseInt(patronIdText.getText());
 
-            // Create and execute the RenewBook command
-            Command renewBook = new RenewBook(patronId, bookId);
-            MessageDisplayer guiDisplayer = new GuiMessageDisplayer();
-            renewBook.execute(mw.getLibrary(), LocalDate.now(),guiDisplayer);
+            // Call the controller method to renew the book
+            controller.renewBook(patronId, bookId);
 
             // Refresh the main window's display
             mw.displayBooks();
@@ -89,22 +87,22 @@ public class RenewBookWindow extends JFrame implements ActionListener {
             this.setVisible(false);
 
             // Show a success message
-            JOptionPane.showMessageDialog(this, 
-                "Book successfully renewed.", 
-                "Success", 
-                JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Book successfully renewed.",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
         } catch (NumberFormatException ex) {
             // Show an error message if the ID format is invalid
-            JOptionPane.showMessageDialog(this, 
-                "Invalid ID format. Please enter a valid number.", 
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Invalid ID format. Please enter a valid number.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
         } catch (LibraryException ex) {
             // Show an error message for other library-specific exceptions
-            JOptionPane.showMessageDialog(this, 
-                ex.getMessage(), 
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 }

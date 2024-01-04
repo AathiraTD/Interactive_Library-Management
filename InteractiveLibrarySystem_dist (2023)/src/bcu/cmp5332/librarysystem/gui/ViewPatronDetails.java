@@ -1,35 +1,25 @@
 package bcu.cmp5332.librarysystem.gui;
 
-import bcu.cmp5332.librarysystem.model.*;
+import bcu.cmp5332.librarysystem.model.Patron;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.UIManager;
+import javax.swing.*;
+import java.awt.*;
 
+/**
+ * The ViewPatronDetails class represents a frame for displaying patron details in a table.
+ * It is used to show patron details to the user.
+ */
 public class ViewPatronDetails extends JFrame {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-    
-    private Patron patron;
+    private static final long serialVersionUID = 1L;
     private JTable table;
 
-    //private JButton addBtn = new JButton("Add");
-    //private JButton exitBtn = new JButton("Exit");
-    
+    /**
+     * Constructs a ViewPatronDetails frame.
+     *
+     * @param patron The patron whose details are to be displayed.
+     */
     public ViewPatronDetails(Patron patron) {
-    	this.patron = patron;
-        
         this.setTitle("Patron Details");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Dispose of the frame when closed
         this.setLayout(new BorderLayout());
@@ -37,15 +27,11 @@ public class ViewPatronDetails extends JFrame {
         // Headers for the table
         String[] columns = new String[]{"Name", "Phone Number", "Email"};
 
-        // Show books which haven't been deleted
-        Object[][] data = new Object[1][4];
-        int rowIndex = 0;
-            if (!patron.isDeleted()) {
-                data[rowIndex][0] = patron.getName();
-                data[rowIndex][1] = patron.getPhoneNumber();
-                data[rowIndex][2] = patron.getEmail();
-                rowIndex++;
-            }
+        // Data for displaying patron's details
+        Object[][] data = new Object[1][3]; // 1 row, 3 columns
+        data[0][0] = patron.getName();
+        data[0][1] = patron.getPhoneNumber();
+        data[0][2] = patron.getEmail();
 
         table = new JTable(data, columns);
         JScrollPane scrollPane = new JScrollPane(table);

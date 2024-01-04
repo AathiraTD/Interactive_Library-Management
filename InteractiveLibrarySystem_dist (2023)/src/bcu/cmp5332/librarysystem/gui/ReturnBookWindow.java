@@ -1,16 +1,11 @@
 package bcu.cmp5332.librarysystem.gui;
 
-import bcu.cmp5332.librarysystem.commands.ReturnBook;
-import bcu.cmp5332.librarysystem.commands.Command;
+import bcu.cmp5332.librarysystem.controllers.LibraryController;
 import bcu.cmp5332.librarysystem.main.LibraryException;
-import bcu.cmp5332.librarysystem.utils.GuiMessageDisplayer;
-import bcu.cmp5332.librarysystem.utils.MessageDisplayer;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
 
 public class ReturnBookWindow extends JFrame implements ActionListener {
 
@@ -23,9 +18,12 @@ public class ReturnBookWindow extends JFrame implements ActionListener {
     private JTextField patronIdText = new JTextField();
     private JButton returnBtn = new JButton("Return");
     private JButton cancelBtn = new JButton("Cancel");
+    private LibraryController controller;
 
-    public ReturnBookWindow(MainWindow mw) {
+
+    public ReturnBookWindow(MainWindow mw,LibraryController controller) {
         this.mw = mw;
+        this.controller=controller;
         initialize();
     }
 
@@ -79,10 +77,8 @@ public class ReturnBookWindow extends JFrame implements ActionListener {
             int bookId = Integer.parseInt(bookIdText.getText());
             int patronId = Integer.parseInt(patronIdText.getText());
 
-            // Create and execute ReturnBook command
-            Command returnBook = new ReturnBook(patronId, bookId);
-            MessageDisplayer guiDisplayer = new GuiMessageDisplayer();
-            returnBook.execute(mw.getLibrary(), LocalDate.now(),guiDisplayer);
+         // Call the controller method to renew the book
+            controller.returnBook(patronId, bookId);
 
             // Refresh the main window display
             mw.displayBooks();

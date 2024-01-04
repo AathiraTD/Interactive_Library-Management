@@ -12,8 +12,11 @@ import java.util.List;
  */
 public class ViewBookDetails extends JFrame {
 
-    private List<Book> booksList;
-    private JTable table;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JTable table;
 
     /**
      * Constructs a ViewBookDetails frame.
@@ -21,7 +24,6 @@ public class ViewBookDetails extends JFrame {
      * @param booksList The list of books to display details for.
      */
     public ViewBookDetails(List<Book> booksList) {
-        this.booksList = booksList;
         this.setTitle("Book Details");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Dispose of the frame when closed
         this.setLayout(new BorderLayout());

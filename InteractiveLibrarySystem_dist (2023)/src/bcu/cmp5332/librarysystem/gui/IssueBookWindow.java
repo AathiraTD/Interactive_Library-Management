@@ -2,6 +2,7 @@ package bcu.cmp5332.librarysystem.gui;
 
 import bcu.cmp5332.librarysystem.commands.BorrowBook;
 import bcu.cmp5332.librarysystem.commands.Command;
+import bcu.cmp5332.librarysystem.controllers.LibraryController;
 import bcu.cmp5332.librarysystem.main.LibraryException;
 import bcu.cmp5332.librarysystem.utils.GuiMessageDisplayer;
 import bcu.cmp5332.librarysystem.utils.MessageDisplayer;
@@ -24,7 +25,7 @@ public class IssueBookWindow extends JFrame implements ActionListener {
     private JButton issueBtn = new JButton("Issue");
     private JButton cancelBtn = new JButton("Cancel");
 
-    public IssueBookWindow(MainWindow mw) {
+    public IssueBookWindow(MainWindow mw, LibraryController controller) {
         this.mw = mw;
         initialize();
     }
@@ -83,9 +84,6 @@ public class IssueBookWindow extends JFrame implements ActionListener {
             Command borrowBook = new BorrowBook(patronId, bookId);
             MessageDisplayer guiDisplayer = new GuiMessageDisplayer();
             borrowBook.execute(mw.getLibrary(), LocalDate.now(),guiDisplayer);
-
-//            // Refresh the main window display
-//            mw.displayBooks();
 
             // Close the issue book window
             this.setVisible(false);

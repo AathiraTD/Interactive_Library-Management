@@ -14,25 +14,28 @@ import java.util.List;
 
 /**
  * The ButtonEditor class represents a custom cell editor for a JTable that contains buttons.
- * It is used to display book details when a button in the table is clicked.
+ * It is used to display book or patron details when a button in the table is clicked.
  */
 public class ButtonEditor extends DefaultCellEditor {
 
+    private static final long serialVersionUID = 1L;
     private JButton button;
     private final Library library;
     private boolean clicked;
     private JTable table;
-    private String lbl;
+    private boolean forBooks; // Indicates whether it's for viewing books or patrons
 
     /**
-     * Constructs a ButtonEditor with a JTextField and a reference to the Library.
+     * Constructs a ButtonEditor with a JTextField, a reference to the Library, and a boolean indicating for books or patrons.
      *
      * @param textField The JTextField component.
      * @param library   The Library object.
+     * @param forBooks  Boolean indicating for books or patrons (true for books, false for patrons).
      */
-    public ButtonEditor(JTextField textField, Library library) {
+    public ButtonEditor(JTextField textField, Library library, boolean forBooks) {
         super(textField);
         this.library = library;
+        this.forBooks = forBooks;
         button = new JButton();
         button.setOpaque(true);
         button.addActionListener(new ActionListener() {
@@ -46,25 +49,22 @@ public class ButtonEditor extends DefaultCellEditor {
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value,
                                                  boolean isSelected, int row, int column) {
-        this.table = table; // Store table reference
-        button.setText((value == null) ? "" : value.toString()); // Set button text
-        lbl =(value==null) ? "":value.toString();
+        this.table = table;
+        button.setText((value == null) ? "" : value.toString());
+        button.setEnabled(value != null && !value.toString().isEmpty());
         return button;
     }
+
 
     @Override
     public Object getCellEditorValue() {
         if (clicked) {
             int row = table.convertRowIndexToModel(table.getEditingRow());
-            String[] properties = lbl.split(":");
-            if(properties[0].equals("Member id")) {
-            	displayPatronDetailsForRow(row);
-            } else if(properties[0].equals("View Books")) {
-            	displayBookDetailsForRow(row); // Display book details
-            }  else if (properties[0].isBlank()){
-            	JOptionPane.showMessageDialog(button, "        No data to view");
+            if (forBooks) {
+                displayBookDetailsForRow(row); // Display book details
+            } else {
+                displayPatronDetailsForRow(row); // Display patron details
             }
-            
         }
         clicked = false;
         return button.getText();
@@ -76,7 +76,7 @@ public class ButtonEditor extends DefaultCellEditor {
             // Assuming ID is in the first column (0), adjust if needed
             int patronId = Integer.parseInt(table.getModel().getValueAt(row, 0).toString());
 
-            Patron patron = library.getPatronByID(patronId);
+            Patron patron = library.getPatronById(patronId);
             
             if (patron != null) {
                 List<Book> booksList = patron.getBorrowedBooks(); // Get list of books which the patron has borrowed.
@@ -93,20 +93,18 @@ public class ButtonEditor extends DefaultCellEditor {
             JOptionPane.showMessageDialog(button, "Error retrieving book details: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
     private void displayPatronDetailsForRow(int row) {
         try {
-            // Retrieve the patron ID and convert it to an Integer
+            // Retrieve the patron's ID and convert it to an Integer
             // Assuming ID is in the first column (0), adjust if needed
             int bookId = Integer.parseInt(table.getModel().getValueAt(row, 0).toString());
-            Book book = library.getBookByID(bookId);
+
+            Book book = library.getBookById(bookId);
             Loan loan = book.getLoan();
             Patron patron = loan.getPatron();
-            
+
             if (patron != null) {
-                	new ViewPatronDetails(patron);
-            } else {
-                	throw new LibraryException("There is no patron borrowing the book");
+                new ViewPatronDetails(patron);
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(button, "Error in parsing patron ID: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

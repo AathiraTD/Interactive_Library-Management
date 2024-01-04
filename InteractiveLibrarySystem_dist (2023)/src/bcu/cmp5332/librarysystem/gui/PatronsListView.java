@@ -73,11 +73,11 @@ public class PatronsListView {
     private void setCustomRenderersAndEditors(JTable table) {
         int booksInfoColumnIndex = 5; // Index of the 'Books Info' column
         table.getColumnModel().getColumn(booksInfoColumnIndex).setCellRenderer(new ButtonRenderer());
-        table.getColumnModel().getColumn(booksInfoColumnIndex).setCellEditor(new ButtonEditor(new JTextField(), library));
+        table.getColumnModel().getColumn(booksInfoColumnIndex).setCellEditor(new ButtonEditor(new JTextField(), library, true));
     }
 
     /**
-     * Generates a string representing the IDs of the books borrowed by a patron.
+     * Generates a string representing the IDs of the books borrowed by a patron. This must go in library class
      * 
      * @param books List of books borrowed by the patron.
      * @return A string containing the concatenated IDs of the borrowed books.
@@ -85,12 +85,10 @@ public class PatronsListView {
     private String getBookIds(List<Book> books) {
         StringBuilder ids = new StringBuilder();
         for (int i = 0; i < books.size(); i++) {
-        	if(!books.get(i).isDeleted()) {
-	            ids.append(books.get(i).getId());
-	            if (i < books.size() - 1) {
-	                ids.append(",");
-	            }
-        	}
+            ids.append(books.get(i).getId());
+            if (i < books.size() - 1) {
+                ids.append(":");
+            }
         }
         return ids.toString();
     }

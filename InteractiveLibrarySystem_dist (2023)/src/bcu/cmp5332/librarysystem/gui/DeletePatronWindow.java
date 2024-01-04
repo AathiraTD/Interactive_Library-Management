@@ -1,18 +1,13 @@
 package bcu.cmp5332.librarysystem.gui;
 
-import bcu.cmp5332.librarysystem.commands.Command;
-import bcu.cmp5332.librarysystem.commands.HidePatrons;
+import bcu.cmp5332.librarysystem.controllers.LibraryController;
 import bcu.cmp5332.librarysystem.main.LibraryException;
-import bcu.cmp5332.librarysystem.utils.GuiMessageDisplayer;
-import bcu.cmp5332.librarysystem.utils.MessageDisplayer;
-
 import java.util.*;
 import java.util.List;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.time.LocalDate;
 
 public class DeletePatronWindow extends JFrame implements ActionListener {
 
@@ -27,9 +22,11 @@ public class DeletePatronWindow extends JFrame implements ActionListener {
     private JButton cancelBtn = new JButton("Cancel");
     private JCheckBox check = new JCheckBox("Are you sure?");
     private boolean isChecked = false;
+    private LibraryController controller;
 
-    public DeletePatronWindow(MainWindow mw) {
+    public DeletePatronWindow(MainWindow mw, LibraryController controller) {
         this.mw = mw;
+        this.controller = controller;
         initialize();
     }
 
@@ -95,41 +92,41 @@ public class DeletePatronWindow extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Deletes a patron using the provided patron ID.
+     */
     private void deletePatron() {
         try {
-            // Parse book ID and patron ID from text fields
             int patronId = Integer.parseInt(patronIdText.getText());
-            List<Integer> patronIds = new ArrayList<Integer>();
+            List<Integer> patronIds = new ArrayList<>();
             patronIds.add(patronId);
 
-            // Create and execute ReturnBook command
-            Command deletePatron = new HidePatrons(patronIds);
-            MessageDisplayer guiDisplayer = new GuiMessageDisplayer();
-            deletePatron.execute(mw.getLibrary(), LocalDate.now(),guiDisplayer);
+            // Call the controller method to delete the patron
+            controller.deletePatron(patronIds);
 
             // Refresh the main window display
             mw.displayPatrons();
 
-            // Close the return book window
-            this.setVisible(false);
+            // Close the window
+            setVisible(false);
 
             // Show success message
-            JOptionPane.showMessageDialog(this, 
-                "Patron successfully deleted.", 
-                "Success", 
-                JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Patron successfully deleted.",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
         } catch (NumberFormatException ex) {
             // Show error message for invalid number format
-            JOptionPane.showMessageDialog(this, 
-                "Invalid ID format. Please enter a valid number.", 
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Invalid ID format. Please enter a valid number.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
         } catch (LibraryException ex) {
             // Show error message for library-specific exceptions
-            JOptionPane.showMessageDialog(this, 
-                ex.getMessage(), 
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 }

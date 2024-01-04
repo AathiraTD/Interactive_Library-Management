@@ -24,6 +24,8 @@ public class ButtonRenderer extends JButton implements TableCellRenderer {
                                                    int row, int column) {
         // Set the text of the button based on the value
         setText((value == null) ? "" : value.toString());
+        //Enabling button only if value exist
+        setEnabled(value != null && !value.toString().isEmpty());
         return this;
     }
 }

@@ -1,16 +1,11 @@
 package bcu.cmp5332.librarysystem.gui;
 
-import bcu.cmp5332.librarysystem.commands.AddPatron;
-import bcu.cmp5332.librarysystem.commands.Command;
+import bcu.cmp5332.librarysystem.controllers.LibraryController;
 import bcu.cmp5332.librarysystem.main.LibraryException;
-import bcu.cmp5332.librarysystem.utils.GuiMessageDisplayer;
-import bcu.cmp5332.librarysystem.utils.MessageDisplayer;
-
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,9 +31,12 @@ public class AddPatronWindow extends JFrame implements ActionListener {
 
     private JButton addBtn = new JButton("Add");
     private JButton cancelBtn = new JButton("Cancel");
+    
+    private LibraryController controller;
 
-    public AddPatronWindow(MainWindow mw) {
+    public AddPatronWindow(MainWindow mw, LibraryController controller) {
         this.mw = mw;
+        this.controller = controller;
         initialize();
     }
 
@@ -107,23 +105,27 @@ public class AddPatronWindow extends JFrame implements ActionListener {
     }
     
     private void addPatron() {
+        String name = nameText.getText();
+        String phone = phoneText.getText();
+        String email = emailText.getText();
+        String bookIdsLine = bookText.getText();
+
         try {
-            String name = nameText.getText();
-            String phone = phoneText.getText();
-            String email = emailText.getText();
-            String bookIdsLine = bookText.getText();
             if (name == null || phone == null || email == null || bookIdsLine == null) {
-            	throw new LibraryException("Inputs cannot be empty.");
+                throw new LibraryException("Inputs cannot be empty.");
             }
             List<Integer> bookIds = parseBookIds(bookIdsLine);
-            // create and execute the AddBook Command
-            Command addPatron = new AddPatron(name, phone, email, bookIds);
-            MessageDisplayer guiDisplayer = new GuiMessageDisplayer();
-            addPatron.execute(mw.getLibrary(), LocalDate.now(), guiDisplayer);
-            // refresh the view with the list of books
-            mw.displayBooks();
-            // hide (close) the AddBookWindow
-            this.setVisible(false);
+
+            // Delegate the action to the controller
+            controller.addPatron(name, phone, email, bookIds);
+            
+         // Refresh the main window display
+            mw.displayPatrons();
+
+            // Display success message
+            JOptionPane.showMessageDialog(this, "Patron successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            this.setVisible(false); // Close the window
         } catch (LibraryException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
