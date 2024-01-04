@@ -29,9 +29,6 @@ public class Main {
         // Load library data from files.
         Library library = LibraryData.load();
 
-        // Link books to their corresponding loans.
-        library.linkBooksToLoans();
-
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         // Display initial instructions to the user.
@@ -60,7 +57,6 @@ public class Main {
                 // Handle exceptions, display error message and rollback changes.
                 System.out.println("Error: " + ex.getMessage() + ". Rolling back changes.");
                 library = LibraryData.load(); // Reload data to rollback changes.
-                library.linkBooksToLoans();
             }
         }
 

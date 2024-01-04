@@ -69,7 +69,7 @@ public class CommandParser {
     }
 
     // Parses the 'addbook' command
-    private static Command parseAddBook() throws IOException {
+    private static Command parseAddBook() throws IOException, LibraryException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("Title: ");
         String title = br.readLine();
@@ -83,7 +83,7 @@ public class CommandParser {
     }
 
     // Parses the 'addpatron' command
-    private static Command parseAddPatron() throws IOException {
+    private static Command parseAddPatron() throws IOException, LibraryException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("Enter patron's name: ");
         String name = br.readLine();
