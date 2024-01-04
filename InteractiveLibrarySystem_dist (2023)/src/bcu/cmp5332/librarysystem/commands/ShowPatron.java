@@ -35,7 +35,7 @@ public class ShowPatron implements Command {
      */
     @Override
     public void execute(Library library, LocalDate currentDate, MessageDisplayer messageDisplayer) throws LibraryException {
-        Patron patron = library.getPatronByID(patronId);
+        Patron patron = library.getPatronById(patronId);
         if (patron != null) {
             messageDisplayer.displayMessage(patron.getDetailsShort());
         } else {

@@ -3,6 +3,7 @@ package bcu.cmp5332.librarysystem.commands;
 import bcu.cmp5332.librarysystem.model.Library;
 import bcu.cmp5332.librarysystem.model.Patron;
 import bcu.cmp5332.librarysystem.utils.MessageDisplayer;
+import bcu.cmp5332.librarysystem.utils.Validator;
 import bcu.cmp5332.librarysystem.data.LibraryData;
 import bcu.cmp5332.librarysystem.main.LibraryException;
 
@@ -23,17 +24,23 @@ public class AddPatron implements Command {
 
     /**
      * Constructs an AddPatron command with patron details and a list of book IDs.
+     * Validates the input details of the patron.
      *
      * @param name         The name of the patron.
      * @param phoneNumber  The phone number of the patron.
      * @param email        The email address of the patron.
      * @param bookIds      A list of book IDs to be associated with the patron.
+     * @throws LibraryException If any input parameter is invalid.
      */
-    public AddPatron(String name, String phoneNumber, String email, List<Integer> bookIds) {
+    public AddPatron(String name, String phoneNumber, String email, List<Integer> bookIds) throws LibraryException {
+        String validationMessage = Validator.validatePatronDetails(name, phoneNumber, email);
+        if (validationMessage != null) {
+            throw new LibraryException(validationMessage);
+        }
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.bookIds = bookIds;
+        this.bookIds = bookIds == null ? new ArrayList<>() : new ArrayList<>(bookIds);
     }
 
     /**
@@ -46,12 +53,8 @@ public class AddPatron implements Command {
      */
     @Override
     public void execute(Library library, LocalDate currentDate, MessageDisplayer messageDisplayer) throws LibraryException {
+        // Generate a unique ID for the new patron
         int maxId = library.getPatrons().stream().mapToInt(Patron::getId).max().orElse(0);
-        
-        // Validate input fields
-        if (name.isBlank() || phoneNumber.isBlank() || email.isBlank()) {
-            throw new LibraryException("Inputs cannot be empty.");
-        }
 
         // Create and add a new patron to the library
         Patron newPatron = new Patron(++maxId, name, phoneNumber, email);
@@ -63,7 +66,7 @@ public class AddPatron implements Command {
                 Command borrowCommand = new BorrowBook(newPatron.getId(), bookId);
                 borrowCommand.execute(library, currentDate, messageDisplayer);
             } catch (LibraryException ex) {
-                messageDisplayer.displayMessage("Error borrowing book ID " + bookId + ": " + ex.getMessage());
+                // Collecting IDs of books that could not be borrowed
                 unavailableBooks.add(bookId);
             }
         }
@@ -79,8 +82,9 @@ public class AddPatron implements Command {
         messageDisplayer.displayMessage("Patron #" + newPatron.getId() + " added with " + 
                                         (bookIds.size() - unavailableBooks.size()) + " borrowed books.");
 
+        // Inform about books that could not be borrowed
         if (!unavailableBooks.isEmpty()) {
-            messageDisplayer.displayMessage("Some books could not be borrowed (already on loan or not found): " + unavailableBooks);
+            messageDisplayer.displayMessage("Some books could not be borrowed: " + unavailableBooks);
         }
     }
 }

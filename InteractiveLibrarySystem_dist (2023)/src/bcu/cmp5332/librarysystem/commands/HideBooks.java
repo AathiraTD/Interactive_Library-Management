@@ -7,9 +7,9 @@ import java.util.List;
 import bcu.cmp5332.librarysystem.data.LibraryData;
 import bcu.cmp5332.librarysystem.main.LibraryException;
 import bcu.cmp5332.librarysystem.model.Book;
-import bcu.cmp5332.librarysystem.model.Book.Status;
 import bcu.cmp5332.librarysystem.model.Library;
 import bcu.cmp5332.librarysystem.utils.MessageDisplayer;
+import bcu.cmp5332.librarysystem.utils.Validator;
 
 /**
  * The HideBooks class represents a command to hide one or more books in the library.
@@ -38,24 +38,12 @@ public class HideBooks implements Command {
     @Override
     public void execute(Library library, LocalDate currentDate, MessageDisplayer messageDisplayer) throws LibraryException {
         for (int bookId : bookIds) {
-            Book book = library.getBookByID(bookId);
+            Book book = library.getBookById(bookId);
 
-            // Check if the book exists in the library
-            if (book == null) {
-                // Display an error message and continue to the next book
-            	throw new LibraryException("Book with ID " + bookId + " not found.");
-            }
+            String validationMessage = Validator.validateBookForHiding(book);
 
-            // Check if the book is already hidden
-            if (book.isDeleted()) {
-                // Display an error message and continue to the next book
-            	throw new LibraryException("Book with ID " + bookId + " is already hidden.");
-            }
-
-            // Check if the book is currently on loan
-            if (book.getStatus() == Status.LOANED_OUT) {
-                // Display an error message and continue to the next book
-            	throw new LibraryException("Book with ID " + bookId + " is currently on loan.");
+            if (validationMessage != null) {
+                throw new LibraryException(validationMessage);
             }
 
             // Hide the book

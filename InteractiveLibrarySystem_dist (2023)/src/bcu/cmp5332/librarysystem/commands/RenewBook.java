@@ -42,8 +42,8 @@ public class RenewBook implements Command {
      */
     @Override
     public void execute(Library library, LocalDate currentDate, MessageDisplayer messageDisplayer) throws LibraryException {
-        Patron patron = library.getPatronByID(patronId);
-        Book book = library.getBookByID(bookId);
+        Patron patron = library.getPatronById(patronId);
+        Book book = library.getBookById(bookId);
 
         // Check if the book and patron are valid
         if (patron == null || book == null) {

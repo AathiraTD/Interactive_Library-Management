@@ -35,7 +35,7 @@ public class ShowBook implements Command {
      */
     @Override
     public void execute(Library library, LocalDate currentDate, MessageDisplayer messageDisplayer) throws LibraryException {
-        Book book = library.getBookByID(bookId);
+        Book book = library.getBookById(bookId);
         if (book != null) {
             messageDisplayer.displayMessage(book.getDetailsShort());
         } else {

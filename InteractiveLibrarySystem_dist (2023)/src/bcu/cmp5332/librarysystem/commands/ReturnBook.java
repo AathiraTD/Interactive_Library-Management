@@ -42,8 +42,8 @@ public class ReturnBook implements Command {
      */
     @Override
     public void execute(Library library, LocalDate currentDate, MessageDisplayer messageDisplayer) throws LibraryException {
-        Patron patron = library.getPatronByID(patronId);
-        Book book = library.getBookByID(bookId);
+        Patron patron = library.getPatronById(patronId);
+        Book book = library.getBookById(bookId);
 
         // Check if the book and patron are valid
         if (patron == null || book == null) {
@@ -63,8 +63,8 @@ public class ReturnBook implements Command {
 
                 // Clear temporary loan ID and return the book to the library's collection
                 book.clearTemporaryLoanId();
-                book.returnToLibrary();
-
+                book.setLoan(null);
+                
                 try {
                     LibraryData.store(library); // Persist changes to data files (books.txt, patrons.txt, loans.txt)
                 } catch (IOException e) {
