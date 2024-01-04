@@ -60,7 +60,6 @@ public class Book {
 
     /**
      * Gets the unique identifier for the book.
-     *
      * @return The book's ID.
      */
     public int getId() {

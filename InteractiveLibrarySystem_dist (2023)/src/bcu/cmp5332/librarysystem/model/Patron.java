@@ -12,7 +12,7 @@ public class Patron {
     private String name; // Name of the patron
     private String phone; // Phone number of the patron
     private String email; // Email of the patron
-    private List<Book> books; // List of books borrowed by the patron
+    private List<Book> borrowedbooks; // List of books borrowed by the patron
     private boolean isDeleted = false; // Flag to indicate if the patron is hidden
 
     /**
@@ -29,7 +29,7 @@ public class Patron {
         this.name = name;
         this.phone = phoneNumber;
         this.email = email;
-        this.books = new ArrayList<>();
+        this.borrowedbooks = new ArrayList<>();
         this.isDeleted = isDeleted;
     }
 
@@ -151,7 +151,7 @@ public class Patron {
      * @return A list of borrowed books.
      */
     public List<Book> getBorrowedBooks() {
-        return new ArrayList<>(books); // Return a copy for encapsulation
+        return new ArrayList<>(borrowedbooks); // Return a copy for encapsulation
     }
 
     /**
@@ -164,7 +164,7 @@ public class Patron {
         if (book == null) {
             throw new LibraryException("Cannot borrow a null book.");
         } else {
-            books.add(book);
+        	borrowedbooks.add(book);
         }
     }
 
@@ -187,9 +187,9 @@ public class Patron {
      * @throws LibraryException If the book is null or not borrowed by the patron.
      */
     public void returnBook(Book book) throws LibraryException {
-        if (book == null || !books.contains(book)) {
+        if (book == null || !borrowedbooks.contains(book)) {
             throw new LibraryException("Cannot return a book that was not borrowed.");
         }
-        books.remove(book);
+        borrowedbooks.remove(book);
     }
 }
