@@ -30,7 +30,7 @@ class BookPublisherTest {
 		Command add = new AddBook("The Great Gatsby", "F. Scott Fitzgerald", "1925", "Charles Scribner's Sons");
         MessageDisplayer cliDisplayer = new CliMessageDisplayer();
         add.execute(library, LocalDate.now(),cliDisplayer);
-        Book book = library.getBookByID(maxId + 1); // New book
+        Book book = library.getBookById(maxId + 1); // New book
 		assertEquals(maxId + 1, book.getId());
 		assertEquals(book.getTitle(), "The Great Gatsby");
 		assertEquals(book.getAuthor(), "F. Scott Fitzgerald");
@@ -56,7 +56,7 @@ class BookPublisherTest {
     		int lastIndex = newLibrary.getBooks().size() - 1;
             maxId = newLibrary.getBooks().get(lastIndex).getId();
     	}
-    	Book book = newLibrary.getBookByID(maxId); // New book
+    	Book book = newLibrary.getBookById(maxId); // New book
         assertEquals(maxId, book.getId());
 		assertEquals(book.getTitle(), "The Great Gatsby");
 		assertEquals(book.getAuthor(), "F. Scott Fitzgerald");

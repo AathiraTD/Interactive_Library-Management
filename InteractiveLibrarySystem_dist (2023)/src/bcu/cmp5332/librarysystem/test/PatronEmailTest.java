@@ -34,7 +34,7 @@ class PatronEmailTest {
 		Command add = new AddPatron("William Smith", "07462074815", "william.smith@mail.bcu.ac.uk", bookIds);
 		MessageDisplayer cliDisplayer = new CliMessageDisplayer();
         add.execute(library, LocalDate.now(),cliDisplayer);
-        Patron patron = library.getPatronByID(maxId + 1); // New patron
+        Patron patron = library.getPatronById(maxId + 1); // New patron
 		assertEquals(maxId + 1, patron.getId());
 		assertEquals(patron.getName(), "William Smith");
 		assertEquals(patron.getPhoneNumber(), "07462074815");
@@ -62,7 +62,7 @@ class PatronEmailTest {
     		int lastIndex = newLibrary.getPatrons().size() - 1;
             maxId = newLibrary.getPatrons().get(lastIndex).getId();
     	}
-        Patron patron = newLibrary.getPatronByID(maxId); // New patron
+        Patron patron = newLibrary.getPatronById(maxId); // New patron
 		assertEquals(maxId, patron.getId());
 		assertEquals(patron.getName(), "William Smith");
 		assertEquals(patron.getPhoneNumber(), "07462074815");
