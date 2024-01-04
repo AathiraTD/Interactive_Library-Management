@@ -3,6 +3,7 @@ package bcu.cmp5332.librarysystem.data;
 import bcu.cmp5332.librarysystem.model.Book;
 import bcu.cmp5332.librarysystem.model.Library;
 import bcu.cmp5332.librarysystem.model.Patron;
+import bcu.cmp5332.librarysystem.utils.DataParserValidator;
 import bcu.cmp5332.librarysystem.main.LibraryException;
 
 import java.io.*;
@@ -24,7 +25,7 @@ public class PatronDataManager implements DataManager {
      * @throws IOException If an IO error occurs.
      * @throws LibraryException If a parsing or data consistency error occurs.
      */
-    
+
     @Override
     public void loadData(Library library) throws IOException, LibraryException {
         File file = new File(RESOURCE);
@@ -33,6 +34,10 @@ public class PatronDataManager implements DataManager {
             while (scanner.hasNextLine()) {
                 lineNumber++;
                 String line = scanner.nextLine();
+                if (!DataParserValidator.validatePatronData(line)) {
+                    // Data validation failed for this line, throw an exception to stop the system
+                    throw new LibraryException("Invalid data format in patrons.txt at line " + lineNumber);
+                }
                 String[] properties = line.split("::");
                 try {
                     int id = Integer.parseInt(properties[0]);
@@ -69,7 +74,7 @@ public class PatronDataManager implements DataManager {
             for (String bookIdStr : borrowedBookIds) {
                 if (!bookIdStr.isEmpty()) {
                     int bookId = Integer.parseInt(bookIdStr.trim());
-                    Book book = library.getBookByID(bookId);
+                    Book book = library.getBookById(bookId);
                     if (book != null) {
                         patron.borrowBook(book);
                     } else {
@@ -87,8 +92,8 @@ public class PatronDataManager implements DataManager {
         }
         // Default to false if 'isDeleted' is not present or is empty
         return false;
-    }
-
+    } 
+    
     /**
      * Stores patron data to a file from the library.
      *

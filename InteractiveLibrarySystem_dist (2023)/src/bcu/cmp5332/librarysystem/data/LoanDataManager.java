@@ -5,6 +5,7 @@ import bcu.cmp5332.librarysystem.model.Book;
 import bcu.cmp5332.librarysystem.model.Library;
 import bcu.cmp5332.librarysystem.model.Loan;
 import bcu.cmp5332.librarysystem.model.Patron;
+import bcu.cmp5332.librarysystem.utils.DataParserValidator;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -12,7 +13,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 /**
@@ -33,57 +33,42 @@ public class LoanDataManager implements DataManager {
     @Override
     public void loadData(Library library) throws IOException, LibraryException {
         try (Scanner scanner = new Scanner(new File(RESOURCE))) {
+            int lineNumber = 0; // Track line number for error reporting
             while (scanner.hasNextLine()) {
+                lineNumber++;
                 String line = scanner.nextLine();
-                
+
                 if (line.isEmpty()) {
                     // Skip empty lines
                     continue;
                 }
-                String[] parts = line.split("::");
-                
-                if (parts.length < 4) {
-                    throw new LibraryException("Invalid line format in loans file: " + line);
+
+                if (!DataParserValidator.isValidLoanData(line)) {
+                    throw new LibraryException("Invalid loan data format in loans.txt at line " + lineNumber);
                 }
 
-                int loanId = parseInteger(parts[0], "loan ID");
-                int patronId = parseInteger(parts[1], "patron ID");
-                int bookId = parseInteger(parts[2], "book ID");
-                LocalDate dueDate = parseDate(parts[3], "due date");
+                String[] parts = line.split("::");
+                int loanId = DataParserValidator.parseInteger(parts[0], "LoanId");
+                int patronId = DataParserValidator.parseInteger(parts[1],"PatronId");
+                int bookId = DataParserValidator.parseInteger(parts[2],"BookId");
+                LocalDate dueDate = LocalDate.parse(parts[3], FORMATTER);
 
-                LocalDate returnDate = parts.length > 4 && !parts[4].isEmpty() ? parseDate(parts[4], "return date") : null;
+                LocalDate returnDate = parts.length > 4 && !parts[4].isEmpty() ? LocalDate.parse(parts[4], FORMATTER) : null;
                 String status = parts.length > 5 && !parts[5].isEmpty() ? parts[5] : "active";
 
-                Patron patron = library.getPatronByID(patronId);
-                Book book = library.getBookByID(bookId);
+                Patron patron = library.getPatronById(patronId);
+                Book book = library.getBookById(bookId);
 
                 if (patron != null && book != null) {
                     Loan loan = new Loan(book, patron, dueDate);
                     loan.setLoanId(loanId);
                     loan.setReturnDate(returnDate);
                     loan.setStatus(status);
-                    library.addLoan(loan);
+                    library.addLoan(loan,book);
                 }
             }
         }
     }
-
-    private int parseInteger(String value, String fieldName) throws LibraryException {
-        try {
-            return Integer.parseInt(value);
-        } catch (NumberFormatException e) {
-            throw new LibraryException("Invalid format for " + fieldName + ": " + value);
-        }
-    }
-
-    private LocalDate parseDate(String value, String fieldName) throws LibraryException {
-        try {
-            return LocalDate.parse(value, FORMATTER);
-        } catch (DateTimeParseException e) {
-            throw new LibraryException("Invalid format for " + fieldName + ": " + value);
-        }
-    }
-
 
     /**
      * Stores loan data to a file from the library.

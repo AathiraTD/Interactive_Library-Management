@@ -2,6 +2,7 @@ package bcu.cmp5332.librarysystem.data;
 
 import bcu.cmp5332.librarysystem.model.Book;
 import bcu.cmp5332.librarysystem.model.Library;
+import bcu.cmp5332.librarysystem.utils.DataParserValidator;
 import bcu.cmp5332.librarysystem.main.LibraryException;
 
 import java.io.File;
@@ -30,48 +31,30 @@ public class BookDataManager implements DataManager {
         try (Scanner sc = new Scanner(new File(RESOURCE))) {
             while (sc.hasNextLine()) {
                 String line = sc.nextLine();
+                // Validate the line using the instance of DataParserValidator
+                if (!DataParserValidator.validateBookData(line)) {
+                    throw new LibraryException("Invalid data format in books.txt: " + line);
+                }
                 String[] properties = line.split(SEPARATOR, -1);
-                int id = Integer.parseInt(properties[0]);
-                String title = properties[1];
-                String author = properties[2];
-                String publicationYear = properties[3];
-                String publisher = properties[4];
+                try {
+                    int id = DataParserValidator.parseInteger(properties[0], "book ID");
+                    String title = properties[1];
+                    String author = properties[2];
+                    String publicationYear = properties[3];
+                    String publisher = properties[4];
 
-                int loanId = parseLoanId(properties, id);
-                boolean isDeleted = parseIsDeleted(properties, id);
-                Book book = new Book(id, title, author, publicationYear, publisher, isDeleted);
-                book.setTemporaryLoanId(loanId); // Temporarily store loan ID for later processing
-                library.addBook(book);
+                    int loanId = (properties.length > 5) ? DataParserValidator.parseInteger(properties[5], "loan ID") : -1;
+                    boolean isDeleted = (properties.length > 6) ? Boolean.parseBoolean(properties[6]) : false;
+                    Book book = new Book(id, title, author, publicationYear, publisher, isDeleted);
+                    book.setTemporaryLoanId(loanId); // Temporarily store loan ID for later processing
+                    library.addBook(book);
+                } catch (NumberFormatException e) {
+                    throw new LibraryException("Invalid number format in books.txt: " + line);
+                }
             }
+        } catch (IOException e) {
+            throw new IOException("Error reading books.txt: " + e.getMessage());
         }
-    }
-
-    /**
-     * Parses the loan ID from book data properties.
-     *
-     * @param properties The split data line from the file.
-     * @param bookId The book ID for error reporting.
-     * @return The parsed loan ID or -1 if not present or invalid.
-     */
-    private int parseLoanId(String[] properties, int bookId) {
-        if (properties.length > 5 && !properties[5].isEmpty()) {
-            try {
-                return Integer.parseInt(properties[5]);
-            } catch (NumberFormatException e) {
-                System.err.println("Warning: Invalid loan ID format in books.txt for book ID " + bookId);
-                return -1;
-            }
-        }
-        return -1;
-    }
-    
-    private boolean parseIsDeleted(String[] properties, int bookId) {
-        // Assuming 'isDeleted' is the sixth element (index 5) in the properties array
-        if (properties.length > 6 && !properties[6].isEmpty()) {
-            return "true".equals(properties[6].trim().toLowerCase());
-        }
-        // Default to false if 'isDeleted' is not present or is empty
-        return false;
     }
 
 
