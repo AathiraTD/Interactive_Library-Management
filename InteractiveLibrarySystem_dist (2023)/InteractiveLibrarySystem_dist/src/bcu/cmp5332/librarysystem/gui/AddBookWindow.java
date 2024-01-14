@@ -6,6 +6,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -83,24 +84,20 @@ public class AddBookWindow extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == addBtn) {
-            try {
-				addBook();
-			} catch (LibraryException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			addBook();
         } else if (ae.getSource() == cancelBtn) {
             this.setVisible(false);
         }
 
     }
 
-    private void addBook() throws LibraryException {
+    private void addBook() {
         String title = titleText.getText();
 		String author = authText.getText();
 		String publicationYear = pubDateText.getText();
 		String publisher = publText.getText();
-
+		
+		try {
 		// Delegate the action to the controller
 		controller.addBook(title, author, publicationYear, publisher);
 
@@ -110,6 +107,9 @@ public class AddBookWindow extends JFrame implements ActionListener {
 		// Display success message and close the window
 		JOptionPane.showMessageDialog(this, "Book: " + title + " successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
 		this.setVisible(false);
+		} catch (LibraryException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
 }

@@ -1,13 +1,16 @@
-15::Pride and Prejudice::Jane Austen::1813::T. Egerton, Whitehall::-1::false
-23::Nineteen Eighty-Four::George Orwell::1949::Secker & Warburg::-1::false
+15::Pride and Prejudice::Jane Austen::1813::T. Egerton, Whitehall::12::false
+23::Nineteen Eighty-Four::George Orwell::1949::Secker & Warburg::10::false
 42::The Hitchhiker's Guide to the Galaxy::Douglas Adams::1979::Pan Books::-1::true
 43::The War of The Worlds::H.G. Wells::1898::William Heinemann::2::false
 44::The Great Gatsby::F. Scott Fitzgerald::1925::Charles Scribner's Sons::5::false
 45::Anna Karenina::Leo Tolstoy::1665::PK::-1::true
 46::Imperium::Robert Harris::1991::CZBX::6::false
 47::Influence::Katty Poerce::1976::PKN::7::false
-48::What You Sek Is What You Get::Alan Sugar::2008::Penguin::-1::false
-49::Hookec::Nir Eyal::2008::Penguin Business::-1::false
+48::What You Sek Is What You Get::Alan Sugar::2008::Penguin::11::false
+49::Hookec::Nir Eyal::2008::Penguin Business::13::false
 50::One Hundred Years of Solitude::Gabriel Garcia marquez::1934::Gamma Books::-1::false
 51::Zero One::Peter Thiel::2008::Penguin::-1::false
 52::Atlas Shurgged::Ayn Rand::1952::Peace::-1::false
+53::Magic Seeds::V. S. Naipaul::2000::Oxwell::9::false
+54::3435::4545::45::45::-1::true
+55::Invisible::Shane::21::Penguin::-1::false

@@ -86,11 +86,6 @@ public class ReturnBookWindow extends JFrame implements ActionListener {
             // Close the return book window
             this.setVisible(false);
 
-            // Show success message
-            JOptionPane.showMessageDialog(this, 
-                "Book successfully returned by patron.", 
-                "Success", 
-                JOptionPane.INFORMATION_MESSAGE);
         } catch (NumberFormatException ex) {
             // Show error message for invalid number format
             JOptionPane.showMessageDialog(this, 

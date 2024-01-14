@@ -33,10 +33,7 @@ public class AddPatron implements Command {
      * @throws LibraryException If any input parameter is invalid.
      */
     public AddPatron(String name, String phoneNumber, String email, List<Integer> bookIds) throws LibraryException {
-        String validationMessage = Validator.validatePatronDetails(name, phoneNumber, email);
-        if (validationMessage != null) {
-            throw new LibraryException(validationMessage);
-        }
+        
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
@@ -53,7 +50,13 @@ public class AddPatron implements Command {
      */
     @Override
     public void execute(Library library, LocalDate currentDate, MessageDisplayer messageDisplayer) throws LibraryException {
-        // Generate a unique ID for the new patron
+        // Validating user input
+    	String validationMessage = Validator.validatePatronDetails(name, phoneNumber, email);
+        if (validationMessage != null) {
+        	//messageDisplayer.displayMessage(validationMessage);
+            throw new LibraryException(validationMessage);
+        }
+    	// Generate a unique ID for the new patron
         int maxId = library.getPatrons().stream().mapToInt(Patron::getId).max().orElse(0);
 
         // Create and add a new patron to the library

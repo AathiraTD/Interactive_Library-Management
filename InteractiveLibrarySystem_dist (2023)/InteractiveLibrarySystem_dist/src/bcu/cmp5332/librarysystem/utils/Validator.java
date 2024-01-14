@@ -29,6 +29,8 @@ public class Validator {
         }
         if (publicationYear == null || publicationYear.isBlank()) {
             return "Publication year cannot be blank.";
+        } else if (!publicationYear.matches("\\d{1,4}")) {
+            return "Publication year must be a digit and can have up to 4 digits.";
         }
         if (publisher == null || publisher.isBlank()) {
             return "Publisher's name cannot be blank.";
@@ -43,19 +45,24 @@ public class Validator {
      * @param phone  The phone number of the patron.
      * @return A validation message. If all inputs are valid, returns null.
      */
-    public static String validatePatronDetails(String name, String email, String phone) {
+    public static String validatePatronDetails(String name, String phone, String email) {
         if (name == null || name.isBlank()) {
             return "Patron name cannot be blank.";
         }
         if (email == null || email.isBlank()) {
             return "Email cannot be blank.";
+        } else if (!email.matches("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}")) {
+            return "Invalid email format. Email should be like 'example@domain.com'.";
         }
+
         if (phone == null || phone.isBlank()) {
             return "Phone number cannot be blank.";
+        } else if (!phone.matches("\\d{10}")) {
+            return "Phone number must be exactly 10 digits.";
         }
-        // Additional specific validations (e.g., email format, phone format) can be added here
         return null;
     }
+
     
     /**
      * Validates the eligibility of the book and patron for borrowing.

@@ -43,6 +43,8 @@ public class CommandParser {
                     return new ListBooks(null,cliDisplayer);
                 case "listpatrons":
                     return new ListPatrons(null,cliDisplayer);
+                case "listloans":
+                    return new ListLoans(null,cliDisplayer);
                 case "help":
                     return new Help();
                 case "showbook":

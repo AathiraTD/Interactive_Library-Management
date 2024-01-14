@@ -9,6 +9,8 @@ import bcu.cmp5332.librarysystem.utils.GuiMessageDisplayer;
 import bcu.cmp5332.librarysystem.utils.MessageDisplayer;
 
 import javax.swing.*;
+
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -26,7 +28,7 @@ public class MainWindow extends JFrame implements ActionListener {
     // UI Components
     private JMenuBar menuBar;
     private JMenu adminMenu, booksMenu, membersMenu;
-    private JMenuItem adminExit, booksView, booksAdd, booksDel, booksIssue, booksReturn, booksRenew;
+    private JMenuItem adminViewLoan,adminExit, booksView, booksAdd, booksDel, booksIssue, booksReturn, booksRenew;
     private JMenuItem memView, memAdd, memDel;
     private JButton viewPatron;
     private MessageDisplayer guiDisplayer = new GuiMessageDisplayer();
@@ -95,8 +97,14 @@ public class MainWindow extends JFrame implements ActionListener {
      */
     private void addAdminMenu() {
         adminMenu = new JMenu("Admin");
+        
+        adminViewLoan = new JMenuItem("Loan History");
         adminExit = new JMenuItem("Exit");
+        
+        adminViewLoan.addActionListener(this);
         adminExit.addActionListener(this);
+        
+        adminMenu.add(adminViewLoan);
         adminMenu.add(adminExit);
         menuBar.add(adminMenu);
     }
@@ -173,12 +181,6 @@ public class MainWindow extends JFrame implements ActionListener {
      */
     public static void main(String[] args) {
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Error setting UI Look and Feel", "UI Error", JOptionPane.ERROR_MESSAGE);
-        }
-
-        try {
         	//Loading the data - required if running GUI directly
             Library library = LibraryData.load();
             new MainWindow(library);
@@ -201,6 +203,11 @@ public class MainWindow extends JFrame implements ActionListener {
             if (ae.getSource() == adminExit) {
                 System.exit(0);
             }
+            //Display Loan History
+            else if (ae.getSource() == adminViewLoan) {
+               displayLoans();
+            }
+            
             // Display the list of books
             else if (ae.getSource() == booksView) {
                 displayBooks();
@@ -325,6 +332,16 @@ public class MainWindow extends JFrame implements ActionListener {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error opening Delete Patron window: " + e.getMessage(), "Window Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    /**
+     * Displays the history of loans in the library.
+     * Creates and shows a view for all loans (open and closed) in the library.
+     */
+    public void displayLoans() {
+    	LoanHistoryView loansHistoryView = new LoanHistoryView(this, library);
+        Command listLoansCommand = new ListLoans(loansHistoryView,guiDisplayer);
+        executeCommand(listLoansCommand);
     }
 
     

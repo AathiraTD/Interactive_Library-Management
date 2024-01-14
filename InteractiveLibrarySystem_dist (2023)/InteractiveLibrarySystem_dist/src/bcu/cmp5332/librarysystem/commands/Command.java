@@ -11,6 +11,7 @@ public interface Command {
     public static final String HELP_MESSAGE = "Commands:\n"
             + "\tlistbooks                       print all books\n"
             + "\tlistpatrons                     print all patrons\n"
+            + "\tlistloans	                     print all loan\n"
             + "\taddbook                         add a new book\n"
             + "\taddpatron                       add a new patron\n"
             + "\tshowbook [book id]              show book details\n"

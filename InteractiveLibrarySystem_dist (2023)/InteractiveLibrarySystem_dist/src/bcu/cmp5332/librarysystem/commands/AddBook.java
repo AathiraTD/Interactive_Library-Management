@@ -31,12 +31,6 @@ public class AddBook implements Command {
      * @throws LibraryException if any input parameter is invalid.
      */
     public AddBook(String title, String author, String publicationYear, String publisher) throws LibraryException {
-        // Validate input parameters using the Validator class
-        String validationMessage = Validator.validateBookDetails(title, author, publicationYear, publisher);
-        if (validationMessage != null) {
-            // If validation fails, throw an exception with the validation message
-            throw new LibraryException(validationMessage);
-        }
         // Assigning validated values to the fields
         this.title = title;
         this.author = author;
@@ -55,6 +49,15 @@ public class AddBook implements Command {
      */
     @Override
     public void execute(Library library, LocalDate currentDate, MessageDisplayer messageDisplayer) throws LibraryException {
+    	  	
+    	// Validate input parameters using the Validator class
+        String validationMessage = Validator.validateBookDetails(title, author, publicationYear, publisher);
+        if (validationMessage != null) {
+            // If validation fails, throw an exception with the validation message
+        	//messageDisplayer.displayMessage(validationMessage);
+        	throw new LibraryException(validationMessage);
+        }
+        
         // Generating a unique ID for the new book
         int maxId = library.getBooks().isEmpty() ? 0 : library.getBooks().stream().mapToInt(Book::getId).max().getAsInt();
         

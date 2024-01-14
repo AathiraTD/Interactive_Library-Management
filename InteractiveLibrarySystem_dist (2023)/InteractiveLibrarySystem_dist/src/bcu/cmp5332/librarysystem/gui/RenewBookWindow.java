@@ -86,11 +86,6 @@ public class RenewBookWindow extends JFrame implements ActionListener {
             // Close the renew book window
             this.setVisible(false);
 
-            // Show a success message
-            JOptionPane.showMessageDialog(this,
-                    "Book successfully renewed.",
-                    "Success",
-                    JOptionPane.INFORMATION_MESSAGE);
         } catch (NumberFormatException ex) {
             // Show an error message if the ID format is invalid
             JOptionPane.showMessageDialog(this,
