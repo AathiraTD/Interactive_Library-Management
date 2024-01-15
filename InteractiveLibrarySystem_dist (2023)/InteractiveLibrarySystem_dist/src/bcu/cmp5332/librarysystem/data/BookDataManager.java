@@ -18,6 +18,12 @@ public class BookDataManager implements DataManager {
     
     private static final String RESOURCE = "./resources/data/books.txt";
     private static final String SEPARATOR = "::"; // Defines the separator used in the file
+    
+    private String resourcePath;
+
+    public BookDataManager() {
+        this.resourcePath = System.getProperty("bookdata.filepath", "./resources/data/books.txt");
+    }
 
     /**
      * Loads book data from a file and adds them to the library.
@@ -28,7 +34,11 @@ public class BookDataManager implements DataManager {
      */
     @Override
     public void loadData(Library library) throws IOException, LibraryException {
-        try (Scanner sc = new Scanner(new File(RESOURCE))) {
+    	File file = new File(resourcePath);
+    	if (!file.exists()) {
+    	    file.createNewFile(); // Create a new file if it doesn't exist
+    	}
+        try (Scanner sc = new Scanner(new File(resourcePath))) {
             while (sc.hasNextLine()) {
                 String line = sc.nextLine();
                 // Validate the line using the instance of DataParserValidator
@@ -66,7 +76,7 @@ public class BookDataManager implements DataManager {
      */
     @Override
     public void storeData(Library library) throws IOException {
-        try (PrintWriter out = new PrintWriter(new FileWriter(RESOURCE))) {
+        try (PrintWriter out = new PrintWriter(new FileWriter(resourcePath))) {
             for (Book book : library.getBooks()) {
                 out.print(book.getId() + SEPARATOR);
                 out.print(book.getTitle() + SEPARATOR);
@@ -78,7 +88,7 @@ public class BookDataManager implements DataManager {
                 out.println(book.isDeleted()); // Write the isDeleted flag
             }
         } catch (IOException ex) {
-            throw new IOException("Failed to write to " + RESOURCE, ex);
+            throw new IOException("Failed to write to " + resourcePath, ex);
         }
     }
 

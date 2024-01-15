@@ -47,7 +47,7 @@ public class BooksListView {
 
             if (loan != null) {
                 patron = loan.getPatron();
-                if (patron != null) {
+                if (patron != null && !patron.isDeleted()) {
                     patronInfo = "View Patrons: " +   "" + " (ID: " + patron.getId() + ")";
                 }
             }

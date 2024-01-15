@@ -22,6 +22,12 @@ public class LoanDataManager implements DataManager {
 
     private static final String RESOURCE = "./resources/data/loans.txt";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    
+    private String resourcePath;
+
+    public LoanDataManager() {
+        this.resourcePath = System.getProperty("bookdata.filepath", "./resources/data/loans.txt");
+    }
 
     /**
      * Loads loan data from a file and adds loans to the library.
@@ -32,7 +38,7 @@ public class LoanDataManager implements DataManager {
      */
     @Override
     public void loadData(Library library) throws IOException, LibraryException {
-        try (Scanner scanner = new Scanner(new File(RESOURCE))) {
+        try (Scanner scanner = new Scanner(new File(resourcePath))) {
             int lineNumber = 0; // Track line number for error reporting
             while (scanner.hasNextLine()) {
                 lineNumber++;
@@ -78,7 +84,7 @@ public class LoanDataManager implements DataManager {
      */
     @Override
     public void storeData(Library library) throws IOException {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(RESOURCE))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(resourcePath))) {
             for (Loan loan : library.getAllLoans()) {
                 int loanId = loan.getLoanId();
                 int patronId = loan.getPatron().getId();
@@ -89,7 +95,7 @@ public class LoanDataManager implements DataManager {
                 writer.println(loanId + "::" + patronId + "::" + bookId + "::" + dueDate + "::" + returnDate + "::" + status);
             }
         } catch (IOException ex) {
-            throw new IOException("Failed to write to " + RESOURCE, ex);
+            throw new IOException("Failed to write to " + resourcePath, ex);
         }
     }
 }

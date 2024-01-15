@@ -18,6 +18,13 @@ public class PatronDataManager implements DataManager {
     private static final String RESOURCE = "./resources/data/patrons.txt";
     private static final String SEPARATOR = "::"; // Defines the separator used in the file
     
+    
+    private String resourcePath;
+
+    public PatronDataManager() {
+        this.resourcePath = System.getProperty("bookdata.filepath", "./resources/data/patrons.txt");
+    }
+    
     /**
      * Loads patron data from a file and adds them to the library.
      *
@@ -28,7 +35,7 @@ public class PatronDataManager implements DataManager {
 
     @Override
     public void loadData(Library library) throws IOException, LibraryException {
-        File file = new File(RESOURCE);
+        File file = new File(resourcePath);
         try (Scanner scanner = new Scanner(file)) {
             int lineNumber = 0; // Add line number tracking
             while (scanner.hasNextLine()) {
@@ -51,12 +58,12 @@ public class PatronDataManager implements DataManager {
                     linkBorrowedBooks(patron, properties, library);
                     library.addPatron(patron);
                 } catch (NumberFormatException e) {
-                    throw new LibraryException("Number format error in file " + RESOURCE 
+                    throw new LibraryException("Number format error in file " + resourcePath 
                         + " at line " + lineNumber + ": " + e.getMessage());
                 }
             }
         } catch (FileNotFoundException e) {
-            throw new LibraryException("The file " + RESOURCE + " was not found.");
+            throw new LibraryException("The file " + resourcePath + " was not found.");
         }
     }
 
@@ -102,7 +109,7 @@ public class PatronDataManager implements DataManager {
      */
     @Override
     public void storeData(Library library) throws IOException {
-        try (PrintWriter out = new PrintWriter(new FileWriter(RESOURCE))) {
+        try (PrintWriter out = new PrintWriter(new FileWriter(resourcePath))) {
             for (Patron patron : library.getPatrons()) {
                 out.print(patron.getId() + SEPARATOR);
                 out.print(patron.getName() + SEPARATOR);
@@ -124,7 +131,7 @@ public class PatronDataManager implements DataManager {
                 out.println(SEPARATOR + patron.isDeleted());
             }
         } catch (IOException ex) {
-            throw new IOException("Failed to write to " + RESOURCE, ex);
+            throw new IOException("Failed to write to " + resourcePath, ex);
         }
     }
 

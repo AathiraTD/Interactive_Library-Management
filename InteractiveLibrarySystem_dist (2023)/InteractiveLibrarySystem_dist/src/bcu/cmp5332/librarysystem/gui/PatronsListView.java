@@ -87,7 +87,7 @@ public class PatronsListView {
         for (int i = 0; i < books.size(); i++) {
             ids.append(books.get(i).getId());
             if (i < books.size() - 1) {
-                ids.append(":");
+                ids.append(",");
             }
         }
         return ids.toString();
