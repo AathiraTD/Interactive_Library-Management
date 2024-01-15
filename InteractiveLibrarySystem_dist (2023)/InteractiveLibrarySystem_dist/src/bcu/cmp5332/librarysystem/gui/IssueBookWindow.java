@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class IssueBookWindow extends JFrame implements ActionListener {
 
     /**
-	 * 
+	 * This class is responsible for providing a small graphical interface to issue a new book to the library system.
 	 */
 	private static final long serialVersionUID = 1L;
 	private MainWindow mw;
@@ -24,11 +24,22 @@ public class IssueBookWindow extends JFrame implements ActionListener {
     private JTextField patronIdText = new JTextField();
     private JButton issueBtn = new JButton("Issue");
     private JButton cancelBtn = new JButton("Cancel");
+    
+    /**
+     * Constructs a IssueBookWindow instance for the Library Management System.
+     * @param mw The main window instance to work with.
+     */
 
     public IssueBookWindow(MainWindow mw, LibraryController controller) {
         this.mw = mw;
         initialize();
     }
+    
+    /**
+     * Initializes the UI components and configures the layout and event listeners.
+     * Creates input fields for the book ID and patron ID.
+     * 
+     */
 
     private void initialize() {
         // Set the title and size of the window
@@ -64,6 +75,12 @@ public class IssueBookWindow extends JFrame implements ActionListener {
         // Make the window visible
         setVisible(true);
     }
+    
+    /**
+     * Handles action events triggered by UI components.
+     * Calls the issueBook method if issue button is pressed.
+     * @param ae The action event that occurred.
+     */
 
     @Override
     public void actionPerformed(ActionEvent ae) {
@@ -73,6 +90,10 @@ public class IssueBookWindow extends JFrame implements ActionListener {
             this.setVisible(false); // Close the window without issuing a book
         }
     }
+    
+    /**
+     * Issues a book to patron using the provided book ID and patron ID.
+     */
 
     private void issueBook() {
         try {

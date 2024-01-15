@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 public class ReturnBookWindow extends JFrame implements ActionListener {
 
     /**
-	 * 
+	 * This class is responsible for providing a small graphical interface for returning a borrowed book.
 	 */
 	private static final long serialVersionUID = 1L;
 	private MainWindow mw;
@@ -19,13 +19,23 @@ public class ReturnBookWindow extends JFrame implements ActionListener {
     private JButton returnBtn = new JButton("Return");
     private JButton cancelBtn = new JButton("Cancel");
     private LibraryController controller;
-
+    
+    /**
+     * Constructs a ReturnBookWindow instance for the Library Management System.
+     * @param mw The main window instance to work with.
+     */
 
     public ReturnBookWindow(MainWindow mw,LibraryController controller) {
         this.mw = mw;
         this.controller=controller;
         initialize();
     }
+    
+    /**
+     * Initializes the UI components and configures the layout and event listeners.
+     * Creates input fields for the book ID and patron ID.
+     * 
+     */
 
     private void initialize() {
         // Set the title and size of the window
@@ -61,6 +71,12 @@ public class ReturnBookWindow extends JFrame implements ActionListener {
         // Make the window visible
         setVisible(true);
     }
+    
+    /**
+     * Handles action events triggered by UI components.
+     * Calls the returnBook method if return button is pressed.
+     * @param ae The action event that occurred.
+     */
 
     @Override
     public void actionPerformed(ActionEvent ae) {
@@ -70,6 +86,10 @@ public class ReturnBookWindow extends JFrame implements ActionListener {
             this.setVisible(false); // Close the window without returning a book
         }
     }
+    
+    /**
+     * Returns a book using the provided book ID and patron ID.
+     */
 
     private void returnBook() {
         try {

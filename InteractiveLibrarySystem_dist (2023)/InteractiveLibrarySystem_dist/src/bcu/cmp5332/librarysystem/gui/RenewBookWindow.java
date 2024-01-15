@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 public class RenewBookWindow extends JFrame implements ActionListener {
 
     /**
-	 * 
+	 * This class is responsible for providing a small graphical interface for renewing a borrowed book.
 	 */
 	private static final long serialVersionUID = 1L;
 	private MainWindow mw;
@@ -19,12 +19,23 @@ public class RenewBookWindow extends JFrame implements ActionListener {
     private JButton renewBtn = new JButton("Renew");
     private JButton cancelBtn = new JButton("Cancel");
     private LibraryController controller;
+    
+    /**
+     * Constructs a RenewBookWindow instance for the Library Management System.
+     * @param mw The main window instance to work with.
+     */
 
     public RenewBookWindow(MainWindow mw,LibraryController controller) {
         this.mw = mw;
         this.controller=controller;
         initialize(); // Initialize the window components
     }
+    
+    /**
+     * Initializes the UI components and configures the layout and event listeners.
+     * Creates input fields for the book ID and patron ID.
+     * 
+     */
 
     private void initialize() {
         setTitle("Renew Book"); // Set the title of the window
@@ -58,6 +69,12 @@ public class RenewBookWindow extends JFrame implements ActionListener {
 
         setVisible(true); // Make the window visible
     }
+    
+    /**
+     * Handles action events triggered by UI components.
+     * Calls the renewBook method if renew button is pressed.
+     * @param ae The action event that occurred.
+     */
 
     @Override
     public void actionPerformed(ActionEvent ae) {

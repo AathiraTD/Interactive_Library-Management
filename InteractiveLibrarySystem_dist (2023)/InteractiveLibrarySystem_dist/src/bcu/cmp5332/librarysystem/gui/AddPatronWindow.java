@@ -20,7 +20,7 @@ import javax.swing.UIManager;
 public class AddPatronWindow extends JFrame implements ActionListener {
 
     /**
-	 * 
+	 * This class is responsible for providing a small graphical interface for adding a new patron to the library system.
 	 */
 	private static final long serialVersionUID = 1L;
 	private MainWindow mw;
@@ -33,6 +33,11 @@ public class AddPatronWindow extends JFrame implements ActionListener {
     private JButton cancelBtn = new JButton("Cancel");
     
     private LibraryController controller;
+    
+    /**
+     * Constructs a AddPatronWindow instance for the Library Management System.
+     * @param mw The main window instance to work with.
+     */
 
     public AddPatronWindow(MainWindow mw, LibraryController controller) {
         this.mw = mw;
@@ -41,7 +46,9 @@ public class AddPatronWindow extends JFrame implements ActionListener {
     }
 
     /**
-     * Initialize the contents of the frame.
+     * Initializes the UI components and configures the layout and event listeners.
+     * Creates input fields for the patron name, phone number, email, and borrowed book IDs.
+     * 
      */
     private void initialize() {
 
@@ -81,6 +88,12 @@ public class AddPatronWindow extends JFrame implements ActionListener {
         setVisible(true);
 
     }
+    
+    /**
+     * Handles action events triggered by UI components.
+     * Calls the addPatron method if add button is pressed.
+     * @param ae The action event that occurred.
+     */
 
     @Override
     public void actionPerformed(ActionEvent ae) {
@@ -91,6 +104,11 @@ public class AddPatronWindow extends JFrame implements ActionListener {
         }
 
     }
+    
+    /**
+     * Parses the book IDs input.
+     * @param line The comma separated book IDs input.
+     */
 
     private static List<Integer> parseBookIds(String line) {
         List<Integer> bookIds = new ArrayList<>();
@@ -104,6 +122,9 @@ public class AddPatronWindow extends JFrame implements ActionListener {
         return bookIds;
     }
     
+    /**
+     * Adds a patron using the provided name, phone number, email, and borrowed book IDs.
+     */
     private void addPatron() {
         String name = nameText.getText();
         String phone = phoneText.getText();

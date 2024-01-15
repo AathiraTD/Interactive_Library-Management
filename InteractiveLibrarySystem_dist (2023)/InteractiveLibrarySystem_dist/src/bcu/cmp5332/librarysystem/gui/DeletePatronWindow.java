@@ -12,7 +12,7 @@ import java.awt.event.*;
 public class DeletePatronWindow extends JFrame implements ActionListener {
 
     /**
-	 * 
+	 * This class is responsible for providing a small graphical interface for deleting a patron from the library system.
 	 */
 	private static final long serialVersionUID = 1L;
 	private MainWindow mw;
@@ -23,12 +23,23 @@ public class DeletePatronWindow extends JFrame implements ActionListener {
     private JCheckBox check = new JCheckBox("Are you sure?");
     private boolean isChecked = false;
     private LibraryController controller;
+    
+    /**
+     * Constructs a DeletePatronWindow instance for the Library Management System.
+     * @param mw The main window instance to work with.
+     */
 
     public DeletePatronWindow(MainWindow mw, LibraryController controller) {
         this.mw = mw;
         this.controller = controller;
         initialize();
     }
+    
+    /**
+     * Initializes the UI components and configures the layout and event listeners.
+     * Creates an input field for the patron ID and a checkbox to confirm deletion.
+     * 
+     */
 
     private void initialize() {
         // Set the title and size of the window
@@ -80,6 +91,12 @@ public class DeletePatronWindow extends JFrame implements ActionListener {
         // Make the window visible
         setVisible(true);
     }
+    
+    /**
+     * Handles action events triggered by UI components.
+     * Calls the deletePatron method if delete button is pressed.
+     * @param ae The action event that occurred.
+     */
 
     @Override
     public void actionPerformed(ActionEvent ae) {

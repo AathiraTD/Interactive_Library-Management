@@ -28,37 +28,14 @@ class PatronEmailTest {
     private Library library;
     private MessageDisplayer cliDisplayer;
 
-    @BeforeEach
-    void setUp() throws IOException, LibraryException {
-        Path tempFile = tempDir.resolve("tempPatrons.txt");
-        System.setProperty("patrondata.filepath", tempFile.toString());
 
-        // Initialize library and CLI displayer
-        library = LibraryData.load();
-        cliDisplayer = new CliMessageDisplayer();
-    }
-
-    @AfterEach
-    void tearDown() {
-        System.clearProperty("patrondata.filepath");
-    }
-
-//    @Test
-//    void addPatronTest() throws LibraryException, IOException {
-//        List<Integer> bookIds = Collections.emptyList();
-//        Command add = new AddPatron("William Smith", "07462074815", "william.smith@mail.bcu.ac.uk", bookIds);
-//        add.execute(library, LocalDate.now(), cliDisplayer);
-//
-//        // Assuming the last added patron is the one we want to test
-//        Patron addedPatron = library.getPatrons().get(library.getPatrons().size() - 1);
-//
-//        assertEquals("William Smith", addedPatron.getName());
-//        assertEquals("07462074815", addedPatron.getPhoneNumber());
-//        assertEquals("william.smith@mail.bcu.ac.uk", addedPatron.getEmail());
-//        assertEquals(bookIds, addedPatron.getBorrowedBooks());
-//    }
-
-
+    /**
+     * This test method checks the functionality of storing and retrieving patron information, including email addresses.
+     * It adds a patron, stores their information, and then retrieves and verifies the stored information.
+     *
+     * @throws LibraryException if there is an error adding the patron.
+     * @throws IOException      if an I/O error occurs during testing.
+     */
     @Test
     void storePatronTest() throws LibraryException, IOException {
         Library library = MockLibraryData.load();

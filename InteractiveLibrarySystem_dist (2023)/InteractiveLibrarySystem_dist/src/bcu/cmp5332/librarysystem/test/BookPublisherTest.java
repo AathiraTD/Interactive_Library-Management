@@ -17,6 +17,16 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This class contains unit tests for the BookPublisher program. It tests the functionality of saving and loading books in the library.
+ * 
+ * <p>These tests ensure that books can be added to the library, stored in a file, and then loaded back with their properties intact.</p>
+ * 
+ * @author [Aathira]
+ * @version 1.0
+ * @since [15/01/2024]
+ */
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class BookPublisherTest {
 
@@ -25,54 +35,14 @@ class BookPublisherTest {
 
     private Library library;
 
-    @BeforeEach
-    void setUp() throws IOException, LibraryException {
-        Path tempFile = tempDir.resolve("tempBooks.txt");
-        System.setProperty("bookdata.filepath", tempFile.toString());
-        library = MockLibraryData.load();
-    }
 
-    @AfterAll
-    static void tearDown() {
-        System.clearProperty("bookdata.filepath");
-    }
-
-
-//    @Test
-//    void addBookTest() throws LibraryException, IOException {
-//        Command addBook = new AddBook("The Great Gatsby", "F. Scott Fitzgerald", "1925", "Charles Scribner's Sons");
-//        addBook.execute(library, LocalDate.now(), new CliMessageDisplayer());
-//
-//        int booksCount = library.getBooks().size();
-//        System.out.println("Number of books after adding: " + booksCount);
-//        assertTrue(booksCount > 0, "Book should be added to the library");
-//
-//        LibraryData.store(library);
-//
-//        Library reloadedLibrary = LibraryData.load();
-//        Book addedBook = reloadedLibrary.getBooks().get(reloadedLibrary.getBooks().size() - 1);
-//
-//        assertAll("book properties",
-//            () -> {
-//                System.out.println("Checking title...");
-//                assertEquals("The Great Gatsby", addedBook.getTitle());
-//            },
-//            () -> {
-//                System.out.println("Checking author...");
-//                assertEquals("F. Scott Fitzgerald", addedBook.getAuthor());
-//            },
-//            () -> {
-//                System.out.println("Checking publication year...");
-//                assertEquals("1925", addedBook.getPublicationYear());
-//            },
-//            () -> {
-//                System.out.println("Checking publisher...");
-//                assertEquals("Charles Scribner's Sons", addedBook.getPublisher());
-//            }
-//        );
-//    }
-
-
+    /**
+     * This test method checks the functionality of saving and loading a book in the library.
+     * It adds a book, stores it, and then loads it back to verify its properties.
+     *
+     * @throws LibraryException if there is an error adding the book.
+     * @throws IOException      if an I/O error occurs during testing.
+     */
     @Test
     void saveAndLoadBookTest() throws LibraryException, IOException {
     	 // Load library data from files

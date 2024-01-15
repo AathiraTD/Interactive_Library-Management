@@ -18,7 +18,7 @@ import javax.swing.UIManager;
 public class AddBookWindow extends JFrame implements ActionListener {
 
     /**
-	 * 
+	 * This class is responsible for providing a small graphical interface for adding a new book to the library system.
 	 */
 	private static final long serialVersionUID = 1L;
 	private MainWindow mw;
@@ -31,7 +31,11 @@ public class AddBookWindow extends JFrame implements ActionListener {
     private JButton cancelBtn = new JButton("Cancel");
     
     private LibraryController controller;
-
+    
+    /**
+     * Constructs a AddBookWindow instance for the Library Management System.
+     * @param mw The main window instance to work with.
+     */
 
     public AddBookWindow(MainWindow mw, LibraryController controller) {
     	this.mw = mw;
@@ -40,7 +44,9 @@ public class AddBookWindow extends JFrame implements ActionListener {
     }
 
     /**
-     * Initialize the contents of the frame.
+     * Initializes the UI components and configures the layout and event listeners.
+     * Creates input fields for the book title, author, publishing date, and publisher.
+     * 
      */
     private void initialize() {
 
@@ -81,6 +87,11 @@ public class AddBookWindow extends JFrame implements ActionListener {
 
     }
 
+    /**
+     * Handles action events triggered by UI components.
+     * Calls the addBook method if add button is pressed.
+     * @param ae The action event that occurred.
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == addBtn) {
@@ -90,6 +101,10 @@ public class AddBookWindow extends JFrame implements ActionListener {
         }
 
     }
+    
+    /**
+     * Adds a book using the provided book title, author, publishing date, and publisher.
+     */
 
     private void addBook() {
         String title = titleText.getText();

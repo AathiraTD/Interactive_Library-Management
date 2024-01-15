@@ -6,6 +6,9 @@ import bcu.cmp5332.librarysystem.utils.MessageDisplayer;
 
 import java.time.LocalDate;
 
+/**
+ * Command to display a help message to the command line.
+ */
 public class Help implements Command {
 
 	@Override

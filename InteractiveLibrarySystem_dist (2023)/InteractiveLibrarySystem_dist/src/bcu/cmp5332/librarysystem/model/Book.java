@@ -19,6 +19,9 @@ public class Book {
     private Loan loan; // Reference to the Loan object if the book is loaned
 
     // Enum for book status
+    /**
+     * Enum for book status - AVAILABLE or LOANED_OUT.
+     */
     public enum Status {
         AVAILABLE, LOANED_OUT
     }

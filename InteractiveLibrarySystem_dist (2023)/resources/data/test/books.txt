@@ -17,3 +17,6 @@
 56::kjdskjdhskjdh::ajdkjashkj::1876::uri::-1::false
 57::The Great Gatsby::F. Scott Fitzgerald::1925::Charles Scribner's Sons::-1::false
 58::1984::George Orwell::1949::Secker & Warburg::-1::false
+59::1984::George Orwell::1949::Secker & Warburg::-1::false
+60::1984::George Orwell::1949::Secker & Warburg::-1::false
+61::1984::George Orwell::1949::Secker & Warburg::-1::false
