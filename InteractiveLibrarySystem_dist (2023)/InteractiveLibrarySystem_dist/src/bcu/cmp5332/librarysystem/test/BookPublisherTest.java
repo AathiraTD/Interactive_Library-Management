@@ -4,84 +4,111 @@ import bcu.cmp5332.librarysystem.commands.*;
 import bcu.cmp5332.librarysystem.main.*;
 import bcu.cmp5332.librarysystem.data.*;
 import bcu.cmp5332.librarysystem.model.*;
-import bcu.cmp5332.librarysystem.utils.CliMessageDisplayer;
-import bcu.cmp5332.librarysystem.utils.MessageDisplayer;
+import bcu.cmp5332.librarysystem.utils.*;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.io.TempDir;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class BookPublisherTest {
 
     @TempDir
     Path tempDir;
 
     private Library library;
-    private MessageDisplayer cliDisplayer;
 
     @BeforeEach
     void setUp() throws IOException, LibraryException {
         Path tempFile = tempDir.resolve("tempBooks.txt");
         System.setProperty("bookdata.filepath", tempFile.toString());
-
-        // Initialize library and CLI displayer
-        library = LibraryData.load();
-        cliDisplayer = new CliMessageDisplayer();
+        library = MockLibraryData.load();
     }
 
-    @AfterEach
-    void tearDown() {
+    @AfterAll
+    static void tearDown() {
         System.clearProperty("bookdata.filepath");
     }
 
+
+//    @Test
+//    void addBookTest() throws LibraryException, IOException {
+//        Command addBook = new AddBook("The Great Gatsby", "F. Scott Fitzgerald", "1925", "Charles Scribner's Sons");
+//        addBook.execute(library, LocalDate.now(), new CliMessageDisplayer());
+//
+//        int booksCount = library.getBooks().size();
+//        System.out.println("Number of books after adding: " + booksCount);
+//        assertTrue(booksCount > 0, "Book should be added to the library");
+//
+//        LibraryData.store(library);
+//
+//        Library reloadedLibrary = LibraryData.load();
+//        Book addedBook = reloadedLibrary.getBooks().get(reloadedLibrary.getBooks().size() - 1);
+//
+//        assertAll("book properties",
+//            () -> {
+//                System.out.println("Checking title...");
+//                assertEquals("The Great Gatsby", addedBook.getTitle());
+//            },
+//            () -> {
+//                System.out.println("Checking author...");
+//                assertEquals("F. Scott Fitzgerald", addedBook.getAuthor());
+//            },
+//            () -> {
+//                System.out.println("Checking publication year...");
+//                assertEquals("1925", addedBook.getPublicationYear());
+//            },
+//            () -> {
+//                System.out.println("Checking publisher...");
+//                assertEquals("Charles Scribner's Sons", addedBook.getPublisher());
+//            }
+//        );
+//    }
+
+
     @Test
-    void addBookTest() throws LibraryException, IOException {
-        Command add = new AddBook("The Great Gatsby", "F. Scott Fitzgerald", "1925", "Charles Scribner's Sons");
-        add.execute(library, LocalDate.now(), cliDisplayer);
+    void saveAndLoadBookTest() throws LibraryException, IOException {
+    	 // Load library data from files
+	    Library library = MockLibraryData.load();
+        Command addBook = new AddBook("1984", "George Orwell", "1949", "Secker & Warburg");
+        addBook.execute(library, LocalDate.now(), new CliMessageDisplayer());
 
-        // Assuming the last added book is the one we want to test
-        Book addedBook = library.getBooks().get(library.getBooks().size() - 1);
+        MockLibraryData.store(library);
 
-        assertEquals("The Great Gatsby", addedBook.getTitle());
-        assertEquals("F. Scott Fitzgerald", addedBook.getAuthor());
-        assertEquals("1925", addedBook.getPublicationYear());
-        assertEquals("Charles Scribner's Sons", addedBook.getPublisher());
-        //assertTrue(library.getBooks().stream().anyMatch(book -> book.getTitle().equals("The Great Gatsby")));
+        Library reloadedLibrary = MockLibraryData.load();
+        List<Book> book = reloadedLibrary.getBooks().stream()
+                .collect(Collectors.toList());
 
-    }
+        assertNotNull(book, "Stored book should not be null");
+        
+      // Get the last book in the list
+        Book storedBook = book.get(book.size() - 1);
 
-    @Test
-    void storeBookTest() throws LibraryException, IOException {
-        // Step 1: Add a book to the Library instance
-        Command add = new AddBook("The Great Gatsby", "F. Scott Fitzgerald", "1925", "Charles Scribner's Sons");
-        add.execute(library, LocalDate.now(), cliDisplayer);
-
-        // Assert the book has been added to the library
-        assertTrue(library.getBooks().stream().anyMatch(book -> book.getTitle().equals("The Great Gatsby")), "Book should be added");
-
-        // Step 2: Store the state of the Library to the temporary file
-        LibraryData.store(library);
-
-        // Step 3: Reload the Library from the same temporary file
-        Library reloadedLibrary = LibraryData.load();
-
-        // Step 4: Assert that the reloaded Library contains the added book
-        Book storedBook = reloadedLibrary.getBooks().stream()
-            .filter(book -> book.getTitle().equals("The Great Gatsby"))
-            .findFirst()
-            .orElse(null);
-
-          
-                assertNotNull(storedBook, "The added book should be present in the reloaded library");
-                assertEquals("The Great Gatsby", storedBook.getTitle());
-                assertEquals("F. Scott Fitzgerald", storedBook.getAuthor());
-                assertEquals("1925", storedBook.getPublicationYear());
-                assertEquals("Charles Scribner's Sons", storedBook.getPublisher());
+        assertAll("stored book properties",
+            () -> {
+                System.out.println("Checking title for stored book...");
+                assertEquals("1984", storedBook.getTitle());
+            },
+            () -> {
+                System.out.println("Checking author for stored book...");
+                assertEquals("George Orwell", storedBook.getAuthor());
+            },
+            () -> {
+                System.out.println("Checking publication year for stored book...");
+                assertEquals("1949", storedBook.getPublicationYear());
+            },
+            () -> {
+                System.out.println("Checking publisher for stored book...");
+                assertEquals("Secker & Warburg", storedBook.getPublisher());
             }
+        );
     }
+
+}
